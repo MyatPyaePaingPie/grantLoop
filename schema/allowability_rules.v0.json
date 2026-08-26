@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1.0",
+  "generated": "2026-08-26",
+  "source": "2 CFR Part 200 Subpart E (Cost Principles)",
+  "VERIFICATION_STATUS": "DRAFT — section numbers written from working knowledge. Every rule MUST be checked against ecfr.gov before it appears on screen in the demo. A wrong citation is worse than no citation.",
+  "determination_values": [
+    "presumptively_allowable",
+    "presumptively_unallowable",
+    "missing_documentation",
+    "requires_allocation",
+    "requires_prior_approval",
+    "conflicts_with_award_terms",
+    "requires_human_determination"
+  ],
+  "global_tests": [
+    { "section": "200.403", "test": "Reasonable, allocable, consistently treated, conforms to limitations, adequately documented. A cost failing ANY of these is not allowable regardless of category." },
+    { "section": "200.404", "test": "Reasonableness — would a prudent person under the circumstances incur this?" },
+    { "section": "200.405", "test": "Allocability — cost benefits the award in proportion to the benefit received. Costs benefiting more than one objective must be allocated, not assigned whole." }
+  ],
+  "rules": [
+    { "id": "R-423-ALC", "section": "200.423", "title": "Alcoholic beverages", "default": "presumptively_unallowable", "splittable": true, "note": "Unallowable outright. If bundled in a catering invoice, split the alcohol amount out and re-evaluate the remainder on its own merits under 200.432/200.438.", "trigger_keywords": ["alcohol", "wine", "beer", "liquor", "spirits", "bar service", "open bar", "cash bar", "sommelier"] },
+    { "id": "R-438-ENT", "section": "200.438", "title": "Entertainment costs", "default": "presumptively_unallowable", "escalate_to": "requires_prior_approval", "note": "Amusement, diversion and social activities are unallowable UNLESS they have a programmatic purpose and are authorized in the approved budget or with prior written approval.", "trigger_keywords": ["entertainment", "tickets", "gala", "social event", "amusement", "recreation", "outing"] },
+    { "id": "R-432-CONF", "section": "200.432", "title": "Conferences", "default": "presumptively_allowable", "note": "Allowable where the primary purpose is dissemination of technical information and costs are necessary and reasonable. Meals at a conference are allowable; entertainment and alcohol within it are not.", "trigger_keywords": ["conference", "convening", "workshop", "summit", "registration fee", "catering", "meals"] },
+    { "id": "R-474-TRAVEL", "section": "200.474", "title": "Travel costs", "default": "presumptively_allowable", "escalate_to": "missing_documentation", "note": "Allowable if reasonable and consistent with the recipient's written travel policy. Air travel above the lowest reasonably available fare is unallowable absent documented justification (200.474(b)). Requires documented business purpose.", "trigger_keywords": ["airfare", "flight", "hotel", "lodging", "per diem", "mileage", "rental car", "first class", "business class"] },
+    { "id": "R-441-FINE", "section": "200.441", "title": "Fines, penalties, damages and other settlements", "default": "presumptively_unallowable", "trigger_keywords": ["fine", "penalty", "late fee", "interest penalty", "settlement", "judgment"] },
+    { "id": "R-450-LOB", "section": "200.450", "title": "Lobbying", "default": "presumptively_unallowable", "note": "Costs of influencing legislation or elections are unallowable. Distinguish from allowable technical assistance provided at the request of a legislative body.", "trigger_keywords": ["lobbying", "lobbyist", "advocacy day", "campaign", "political contribution", "PAC"] },
+    { "id": "R-445-PERS", "section": "200.445", "title": "Goods or services for personal use", "default": "presumptively_unallowable", "trigger_keywords": ["personal", "gift card", "employee gift", "flowers", "holiday party"] },
+    { "id": "R-434-CONTRIB", "section": "200.434", "title": "Contributions and donations", "default": "presumptively_unallowable", "note": "Contributions or donations MADE by the recipient are unallowable as a charge to the award.", "trigger_keywords": ["donation", "contribution", "sponsorship", "charitable gift"] },
+    { "id": "R-421-ADV", "section": "200.421", "title": "Advertising and public relations", "default": "requires_human_determination", "note": "Allowable only for specified purposes — recruitment of personnel, procurement of goods, disposal of surplus, program outreach required by the award. General institutional promotion and goodwill advertising are unallowable.", "trigger_keywords": ["advertising", "ad spend", "public relations", "promotional", "branding", "swag", "billboard"] },
+    { "id": "R-439-EQUIP", "section": "200.439", "title": "Equipment and other capital expenditures", "default": "requires_prior_approval", "note": "Capital expenditures for general purpose equipment, buildings and land are unallowable as direct charges except with prior written approval of the Federal awarding agency. Check the org capitalization threshold against 200.1 'equipment'.", "trigger_keywords": ["equipment", "laptop", "vehicle", "server", "furniture", "renovation", "capital"], "threshold_field": "capitalization_threshold" },
+    { "id": "R-430-COMP", "section": "200.430", "title": "Compensation — personal services", "default": "missing_documentation", "note": "Allowable to the extent reasonable, but charges must be supported by records that accurately reflect the work performed. Effort/time distribution records are the evidence. No records -> missing_documentation, not unallowable.", "trigger_keywords": ["payroll", "salary", "wages", "stipend", "timesheet", "contractor labor"] },
+    { "id": "R-431-FRINGE", "section": "200.431", "title": "Compensation — fringe benefits", "default": "presumptively_allowable", "escalate_to": "requires_allocation", "trigger_keywords": ["fringe", "benefits", "health insurance", "retirement", "payroll tax", "FICA"] },
+    { "id": "R-405-ALLOC", "section": "200.405", "title": "Allocable costs — shared benefit", "default": "requires_allocation", "note": "Fires when a cost plainly benefits more than one program or the organization as a whole. Do not assign the full amount to the award.", "trigger_keywords": ["rent", "utilities", "insurance", "phone", "internet", "software subscription", "shared"] },
+    { "id": "R-414-IDC", "section": "200.414", "title": "Indirect (F&A) costs", "default": "requires_human_determination", "note": "Recipients without a negotiated rate may elect the de minimis rate. CONFIRM THE CURRENT DE MINIMIS PERCENTAGE AND BASE AGAINST eCFR — it was revised in the 2024 OMB update. Do not hardcode from memory.", "trigger_keywords": ["indirect", "overhead", "administrative", "F&A", "de minimis"] },
+    { "id": "R-453-SUPP", "section": "200.453", "title": "Materials and supplies", "default": "presumptively_allowable", "note": "Allowable when necessary to carry out the award; charge at actual cost net of credits.", "trigger_keywords": ["supplies", "materials", "office supplies", "printing paper"] },
+    { "id": "R-454-MEMB", "section": "200.454", "title": "Memberships, subscriptions, professional activity", "default": "presumptively_allowable", "escalate_to": "presumptively_unallowable", "note": "Business/technical/professional organization memberships allowable. Memberships in organizations whose primary purpose is lobbying are unallowable. Civic and community organization memberships require prior approval.", "trigger_keywords": ["membership", "dues", "subscription", "association", "chamber of commerce"] },
+    { "id": "R-456-PSC", "section": "200.456", "title": "Participant support costs", "default": "presumptively_allowable", "note": "Allowable with prior approval; moving funds OUT of this category generally requires prior approval under 200.308.", "trigger_keywords": ["participant support", "stipend", "participant travel", "youth incentive", "gift card to participant"] },
+    { "id": "R-458-PREAWARD", "section": "200.458", "title": "Pre-award costs", "default": "requires_prior_approval", "note": "Allowable only to the extent they would have been allowable if incurred after the award date, and only with written approval. Fires when txn.date < period_of_performance.start.", "trigger_keywords": [], "date_rule": "txn_date_before_pop_start" },
+    { "id": "R-POP-END", "section": "200.403", "title": "Cost outside period of performance", "default": "conflicts_with_award_terms", "note": "Fires when txn.date > period_of_performance.end.", "date_rule": "txn_date_after_pop_end" },
+    { "id": "R-BUDGET-OVER", "section": "200.308", "title": "Revision of budget and program plans", "default": "requires_prior_approval", "note": "Fires when cumulative spend in a cost category exceeds the approved budget line beyond the agency's allowed variance. This rule is what makes the budget a live contract rather than a spreadsheet.", "trigger_keywords": [] },
+    { "id": "R-334-RETENTION", "section": "200.334", "title": "Retention of records", "default": "missing_documentation", "note": "Supporting documentation must exist and be retained. Fires when a transaction has no attachment.", "trigger_keywords": [] }
+  ],
+  "monitoring_consequences": {
+    "section": "200.208",
+    "correct_framing": "A finding or a late report does not automatically make a recipient 'high-risk'. The awarding agency MAY impose specific conditions, which can include additional monitoring, additional or more frequent reporting, prior approval requirements, reimbursement-only payment, or withholding authority to proceed.",
+    "never_say": ["one late SF-425 makes you high-risk", "automatically designated high-risk"]
+  }
+}

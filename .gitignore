@@ -1,0 +1,12 @@
+# Local agent runtime — not shared
+_meta/
+
+# Secrets
+.env
+.env.*
+.envrc
+*.key
+service-account*.json
+
+# OS / editor
+.DS_Store

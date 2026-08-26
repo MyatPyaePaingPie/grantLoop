@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "note": "Fictional org. All figures invented for demo. Deterministic — this file IS the replay path.",
+  "org": {
+    "org_id": "org_riverbend",
+    "legal_name": "Riverbend Youth Services, Inc.",
+    "uei": "DEMO00000RBY1",
+    "annual_budget": 850000,
+    "admin_staff": 2,
+    "indirect_rate": { "type": "de_minimis", "rate": null, "basis": "MTDC", "citation": "200.414", "TODO": "set from eCFR-verified de minimis rate" },
+    "capitalization_threshold": 5000,
+    "written_travel_policy": true
+  },
+  "application": {
+    "application_id": "APP-2026-0417",
+    "nofo_id": "NOFO-93600-2026-001",
+    "requested_federal_share": 250000,
+    "budget_lines": [
+      { "line_id": "BL-01", "cost_category": "Personnel — Program Director 1.0 FTE", "amount": 82000 },
+      { "line_id": "BL-02", "cost_category": "Personnel — Youth Mentors (2 x 0.5 FTE)", "amount": 46000 },
+      { "line_id": "BL-03", "cost_category": "Fringe benefits @ 22%", "amount": 28160 },
+      { "line_id": "BL-04", "cost_category": "Participant support — youth stipends", "amount": 30000 },
+      { "line_id": "BL-05", "cost_category": "Travel — staff training", "amount": 6000 },
+      { "line_id": "BL-06", "cost_category": "Supplies and materials", "amount": 9000 },
+      { "line_id": "BL-07", "cost_category": "Community convening / outreach events", "amount": 12000 },
+      { "line_id": "BL-08", "cost_category": "Equipment — program laptops (4)", "amount": 6400 },
+      { "line_id": "BL-09", "cost_category": "Rent and utilities (allocated)", "amount": 14000 },
+      { "line_id": "BL-10", "cost_category": "Indirect", "amount": 16440 }
+    ],
+    "performance_promises": [
+      { "id": "PP-1", "metric": "youth enrolled", "target": 120, "cadence": "semiannual" },
+      { "id": "PP-2", "metric": "mentor match retention at 6 months", "target": 75, "unit": "percent", "cadence": "semiannual" },
+      { "id": "PP-3", "metric": "convenings held", "target": 4, "cadence": "annual" }
+    ],
+    "PLANTED_INCONSISTENCY": {
+      "exception_id": "EXC-001",
+      "kind": "budget_narrative_mismatch",
+      "description": "The narrative promises 120 youth served with a 1:10 mentor ratio, which requires 12 mentors. The budget funds 2 mentors at 0.5 FTE. The two documents cannot both be true.",
+      "conflicting_sources": [
+        { "doc_id": "APP-2026-0417", "locator": "narrative:approach:p3", "quoted_text": "Riverbend will serve 120 youth at a 1:10 mentor-to-participant ratio." },
+        { "doc_id": "APP-2026-0417", "locator": "budget:BL-02", "quoted_text": "Youth Mentors (2 x 0.5 FTE) — $46,000" }
+      ],
+      "proposed_resolutions": [
+        "Reduce the served-youth target to 20 to match funded mentor capacity.",
+        "Increase the mentor budget line to fund 12 mentors (requires cutting elsewhere or raising the request).",
+        "Restate the ratio as a small-group model with documented staffing math."
+      ],
+      "why_this_one": "It is the single check that proves the thesis: the application and the compliance object are the same thing. An org that submits this wins a grant it cannot perform, and the performance report at month 6 is where it explodes."
+    }
+  },
+  "notice_of_award": {
+    "doc_id": "NOA-93600-2026-0417",
+    "award_id": "FAIN-93600-2026-0417",
+    "award_date": "2026-09-01",
+    "period_of_performance": { "start": "2026-10-01", "end": "2027-09-30" },
+    "federal_share": 212000,
+    "AWARD_DELTAS_TO_SURFACE": [
+      { "obligation_ref": "BL-04", "status": "reduced", "proposed_value": 30000, "awarded_value": 18000, "agency_note": "Participant support reduced.", "downstream_effect": "Stipend plan must be re-scoped from 120 to ~72 participants, OR the per-participant amount cut. Moving these funds to another category requires prior approval under 200.308." },
+      { "obligation_ref": "BL-08", "status": "condition_attached", "proposed_value": 6400, "awarded_value": 6400, "agency_note": "Equipment purchases require prior written approval.", "downstream_effect": "Ledger Sentinel must block laptop purchases until an approval artifact exists." },
+      { "obligation_ref": "BL-07", "status": "reduced", "proposed_value": 12000, "awarded_value": 8000, "agency_note": "Outreach events reduced.", "downstream_effect": "Convening target PP-3 of 4 events is now underfunded — a performance promise the award silently made unachievable. Nobody's software catches this today." },
+      { "obligation_ref": "PP-1", "status": "unchanged", "proposed_value": 120, "awarded_value": 120, "agency_note": "Performance targets accepted as proposed.", "downstream_effect": "THE HEADLINE: the agency cut the money and kept the target. GrantLoop says so out loud on award day instead of at the first performance report." }
+    ],
+    "specific_conditions": [
+      { "condition_id": "SC-1", "text": "Recipient must submit quarterly rather than semiannual SF-425 for the first year.", "imposed_measure": "additional_reporting", "citation": { "source": "2_CFR_200", "section": "200.208" }, "removal_criteria": "Four consecutive timely and accurate submissions." },
+      { "condition_id": "SC-2", "text": "Prior written approval required for any equipment purchase.", "imposed_measure": "prior_approval_required", "citation": { "source": "2_CFR_200", "section": "200.208" } }
+    ]
+  },
+  "ledger_stream": {
+    "note": "Fired in order on demand. Each is chosen to land on a DIFFERENT determination value — that is the point. Seven determinations, seven visibly different behaviors.",
+    "transactions": [
+      { "txn_id": "TXN-001", "date": "2026-10-14", "vendor": "Northside Print Co", "memo": "Program workbooks, 120 copies", "amount": 842.00, "gl_account": "6200 Supplies", "attachments": ["invoice_9921.pdf"], "expected_determination": "presumptively_allowable", "expected_citations": ["200.453"] },
+      { "txn_id": "TXN-002", "date": "2026-11-02", "vendor": "Harbor Catering LLC", "memo": "Fall community convening — catering for 80, incl. wine service", "amount": 1240.00, "gl_account": "6400 Events", "attachments": ["invoice_HC-3312.pdf"], "line_detail": [ { "desc": "Buffet dinner, 80 guests", "amount": 828.00 }, { "desc": "Wine service", "amount": 412.00 } ], "expected_behavior": "SPLIT — $412.00 alcohol carved out as presumptively_unallowable under 200.423 and proposed for reclass to unrestricted funds. The remaining $828.00 is NOT auto-approved; it routes for program-purpose review under 200.432/200.438 against obligation for convening PP-3.", "expected_citations": ["200.423", "200.438", "200.432"] },
+      { "txn_id": "TXN-003", "date": "2026-11-08", "vendor": "Cash / unidentified", "memo": "reimbursement", "amount": 310.00, "gl_account": "6100 Travel", "attachments": [], "expected_determination": "missing_documentation", "expected_citations": ["200.403", "200.334", "200.474"] },
+      { "txn_id": "TXN-004", "date": "2026-11-15", "vendor": "Riverbend Property Mgmt", "memo": "November rent — full building", "amount": 3200.00, "gl_account": "6800 Occupancy", "attachments": ["lease.pdf"], "expected_determination": "requires_allocation", "expected_citations": ["200.405"], "note": "Riverbend runs three programs out of this building. Charging 100% to the award is the single most common real-world finding." },
+      { "txn_id": "TXN-005", "date": "2026-11-20", "vendor": "TechDirect", "memo": "4x program laptops", "amount": 6400.00, "gl_account": "6900 Equipment", "attachments": ["quote.pdf"], "expected_determination": "requires_prior_approval", "expected_citations": ["200.439", "200.208"], "note": "Blocks against specific condition SC-2. Sentinel must cite the AWARD TERM, not just the CFR — that is the provenance chain doing visible work." },
+      { "txn_id": "TXN-006", "date": "2026-09-18", "vendor": "Statewide Youth Conference", "memo": "Early-bird registration, 2 staff", "amount": 690.00, "gl_account": "6100 Travel", "attachments": ["receipt.pdf"], "expected_determination": "conflicts_with_award_terms", "expected_citations": ["200.458", "200.403"], "note": "Dated BEFORE period of performance start (2026-10-01). Pre-award cost." },
+      { "txn_id": "TXN-007", "date": "2026-12-03", "vendor": "Community Chamber Alliance", "memo": "Annual membership dues", "amount": 500.00, "gl_account": "6600 Dues", "attachments": ["invoice.pdf"], "expected_determination": "requires_human_determination", "expected_citations": ["200.454", "200.450"], "note": "Turns on whether this organization's primary purpose includes lobbying. An agent cannot know that. It asks, with the exact question stated." }
+    ]
+  },
+  "reporting": {
+    "first_report": { "report_id": "RPT-Q1", "form": "SF-425", "period_start": "2026-10-01", "period_end": "2026-12-31", "due_date": "2027-01-30", "certifying_official": "M. Okonkwo, Executive Director" },
+    "demo_beat": "At T-minus-14 days the Reporting Agent assembles the SF-425 from actual ledger state — every dollar on every line clickable back to its transaction and its determination — and attaches an unresolved-exceptions block listing TXN-003, TXN-004, TXN-005 and TXN-007 as items the certifying official must clear BEFORE certifying. It then waits. It does not file."
+  }
+}

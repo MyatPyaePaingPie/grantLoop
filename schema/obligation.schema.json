@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grantloop.dev/schema/obligation.schema.json",
+  "title": "GrantLoop Obligation Model",
+  "description": "The central object. Created by the Covenant Agent when a Notice of Award is ingested. Every downstream determination, evidence artifact and report line traces back to an obligation_id declared here. This is the 'promise' half of promise-to-proof.",
+  "type": "object",
+  "required": ["award_id", "recipient", "provenance", "obligations", "reporting_calendar", "created_at", "schema_version"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "award_id": { "type": "string", "description": "Federal Award Identification Number (FAIN)" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "recipient": {
+      "type": "object",
+      "required": ["org_id", "legal_name", "uei"],
+      "properties": {
+        "org_id": { "type": "string" },
+        "legal_name": { "type": "string" },
+        "uei": { "type": "string", "description": "Unique Entity Identifier (SAM.gov)" },
+        "indirect_rate": {
+          "type": "object",
+          "properties": {
+            "type": { "enum": ["negotiated", "de_minimis", "none"] },
+            "rate": { "type": "number" },
+            "basis": { "enum": ["MTDC", "TDC", "other"] },
+            "citation": { "type": "string" }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "The lineage chain. This is the competitive moat: every obligation knows which proposal sentence it came from and whether the award changed it.",
+      "required": ["nofo_id", "application_id", "notice_of_award_doc_id"],
+      "properties": {
+        "nofo_id": { "type": "string" },
+        "application_id": { "type": "string" },
+        "notice_of_award_doc_id": { "type": "string" },
+        "prior_award_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "period_of_performance": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" }
+      }
+    },
+    "funding": {
+      "type": "object",
+      "properties": {
+        "federal_share": { "type": "number" },
+        "recipient_share": { "type": "number" },
+        "cost_share_required": { "type": "boolean" },
+        "total_approved_budget": { "type": "number" }
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "description": "Every discrete promise carried from application into award.",
+      "items": {
+        "type": "object",
+        "required": ["obligation_id", "kind", "statement", "source", "award_delta", "enforcement"],
+        "properties": {
+          "obligation_id": { "type": "string", "pattern": "^OBL-[0-9]{4}$" },
+          "kind": {
+            "enum": ["budget_line", "performance_outcome", "reporting_deadline", "prior_approval_condition", "cost_share", "specific_condition", "programmatic_commitment"]
+          },
+          "statement": { "type": "string", "description": "Human-readable promise, quoted or paraphrased from the source." },
+          "source": {
+            "type": "object",
+            "description": "Where the promise came from. Required for traceability.",
+            "required": ["doc_id", "locator"],
+            "properties": {
+              "doc_id": { "type": "string" },
+              "locator": { "type": "string", "description": "page/section/line anchor, e.g. 'application:budget_narrative:p4:line12'" },
+              "quoted_text": { "type": "string" }
+            }
+          },
+          "award_delta": {
+            "type": "object",
+            "description": "What the Notice of Award changed relative to the application. The centerpiece of the demo.",
+            "required": ["status"],
+            "properties": {
+              "status": { "enum": ["unchanged", "reduced", "increased", "added_by_agency", "removed_by_agency", "condition_attached"] },
+              "proposed_value": {},
+              "awarded_value": {},
+              "agency_note": { "type": "string" },
+              "downstream_effect": { "type": "string", "description": "Plain-language consequence, e.g. 'staffing plan must be re-scoped to 0.6 FTE'." }
+            }
+          },
+          "budget_line": {
+            "type": "object",
+            "description": "Present when kind == budget_line.",
+            "properties": {
+              "cost_category": { "type": "string" },
+              "amount": { "type": "number" },
+              "allowability_determination": { "$ref": "#/$defs/determination" },
+              "citations": { "type": "array", "items": { "$ref": "#/$defs/citation" } }
+            }
+          },
+          "measurement": {
+            "type": "object",
+            "description": "Present when kind == performance_outcome.",
+            "properties": {
+              "metric": { "type": "string" },
+              "target": { "type": "number" },
+              "unit": { "type": "string" },
+              "cadence": { "enum": ["monthly", "quarterly", "semiannual", "annual", "final"] },
+              "evidence_plan": { "type": "array", "items": { "type": "string" }, "description": "What artifact will prove this." }
+            }
+          },
+          "enforcement": {
+            "type": "object",
+            "required": ["mode"],
+            "properties": {
+              "mode": { "enum": ["monitor_transactions", "monitor_deadline", "monitor_metric", "block_until_prior_approval", "human_attest_only"] },
+              "trigger_keywords": { "type": "array", "items": { "type": "string" } },
+              "threshold": { "type": "number" }
+            }
+          },
+          "status": { "enum": ["active", "satisfied", "at_risk", "breached", "waived", "superseded"], "default": "active" }
+        }
+      }
+    },
+    "specific_conditions": {
+      "type": "array",
+      "description": "Conditions imposed under 2 CFR 200.208. NOT the same as being labeled 'high-risk' — record exactly what the agency imposed.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition_id": { "type": "string" },
+          "text": { "type": "string" },
+          "imposed_measure": {
+            "enum": ["additional_monitoring", "additional_reporting", "prior_approval_required", "reimbursement_only_payment", "withholding_authority_to_proceed", "technical_assistance_required", "other"]
+          },
+          "citation": { "$ref": "#/$defs/citation" },
+          "removal_criteria": { "type": "string" }
+        }
+      }
+    },
+    "reporting_calendar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["report_id", "form", "period_start", "period_end", "due_date"],
+        "properties": {
+          "report_id": { "type": "string" },
+          "form": { "enum": ["SF-425", "SF-425A", "performance_narrative", "final_SF-425", "final_performance"] },
+          "period_start": { "type": "string", "format": "date" },
+          "period_end": { "type": "string", "format": "date" },
+          "due_date": { "type": "string", "format": "date" },
+          "covers_obligation_ids": { "type": "array", "items": { "type": "string" } },
+          "certifying_official": { "type": "string", "description": "Named human. 2 CFR 200.415 requires certification by an authorized official — the agent never certifies." },
+          "status": { "enum": ["scheduled", "assembling", "awaiting_certification", "certified", "exported", "late"] }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "determination": {
+      "type": "string",
+      "description": "Seven-value determination. Deliberately NOT binary allowable/unallowable.",
+      "enum": [
+        "presumptively_allowable",
+        "presumptively_unallowable",
+        "missing_documentation",
+        "requires_allocation",
+        "requires_prior_approval",
+        "conflicts_with_award_terms",
+        "requires_human_determination"
+      ]
+    },
+    "citation": {
+      "type": "object",
+      "required": ["source", "section"],
+      "properties": {
+        "source": { "enum": ["2_CFR_200", "award_terms", "agency_policy", "org_policy"] },
+        "section": { "type": "string", "examples": ["200.423", "200.438", "200.474(b)"] },
+        "title": { "type": "string" },
+        "verified_against_ecfr": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}
