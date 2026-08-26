@@ -15,6 +15,7 @@ and reporting as one living object. Built for the All Things Agentic hackathon (
 | 7-value allowability rules (2 CFR 200) | [`schema/allowability_rules.v0.json`](schema/allowability_rules.v0.json) |
 | Riverbend demo scenario / replay seed | [`seed/riverbend_scenario.json`](seed/riverbend_scenario.json) |
 | GCP + Gemini validation, and the blocker | [`docs/GCP_VALIDATION_2026-08-26.md`](docs/GCP_VALIDATION_2026-08-26.md) |
+| eCFR verification of every citation | [`docs/ECFR_VERIFICATION_2026-08-26.md`](docs/ECFR_VERIFICATION_2026-08-26.md) |
 
 ## The lineage
 
@@ -52,8 +53,10 @@ Full reasoning in the plan.
 - ⛔ **Blocker:** only `gemini-2.5-flash` returns 200 on `modelmind-491801`; every Gemini 3.x id
   404s. Submission rules require 3.5+. Build behind a single `MODEL_ID` env var.
 - Cloud Run, Firestore, Artifact Registry and Cloud Build are not yet enabled on the project.
-- `allowability_rules.v0.json` is marked `VERIFICATION_STATUS: DRAFT` — every CFR cite needs an
-  eCFR check before it renders on screen.
+- ✅ CFR citations are verified against eCFR (snapshot 2026-08-01). Four were wrong and are fixed —
+  see the verification doc. Two demo beats changed as a result: the laptop block rests on award term
+  SC-2 rather than 2 CFR 200.439, and chamber dues are allowable under 200.454(c) with the escalation
+  turning only on whether the organization's primary purpose is lobbying.
 
 </details>
 
