@@ -2,7 +2,7 @@
 
 **Target:** ~4:00 min. Judging: 40% innovation/operational utility, 30% architecture, 30% demo + production readiness. Video MUST show the backend running on Google Cloud.
 
-**Owner:** Pooof (Paing's machine). **Status:** v1 — beats and scenario figures locked to the plan doc. Voiceover lines drafted; CFR citations render ONLY after Aria Agent's eCFR verification clears `allowability_rules.v0.json` (currently `VERIFICATION_STATUS: DRAFT`).
+**Owner:** Pooof (Paing's machine). **Status:** v1.1 — beats and scenario figures locked to the plan doc. Citation gate CLEARED: eCFR pass done 2026-08-26 (docs/ECFR_VERIFICATION_2026-08-26.md), rules at v1.0.0, citations now render on screen. Laptop beat leads with award term SC-2, CFR as context (per verified TXN-005 note).
 
 **Everything model-facing sits behind one `MODEL_ID` env var** (Gemini 3.x blocker: swap is a one-liner when cleared).
 

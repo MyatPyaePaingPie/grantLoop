@@ -68,9 +68,9 @@
 <div class="simulated">SIMULATED DATA — DEMO</div>
 
 <script>
-// Citations stay hidden until the eCFR verification pass clears
-// allowability_rules.v0.json (VERIFICATION_STATUS: DRAFT).
-const CITATIONS_VERIFIED = false;
+// Flipped after the eCFR pass: rules VERIFIED 2026-08-26 against the
+// 2026-08-01 point-in-time snapshot (docs/ECFR_VERIFICATION_2026-08-26.md).
+const CITATIONS_VERIFIED = true;
 
 const DET_STYLE = {
   presumptively_allowable:      { label: "Allowable",            color: "var(--good)",   bg: "#ecfdf3" },
@@ -126,9 +126,16 @@ function renderAward(seed) {
 function renderSentinel(seed) {
   const txns = seed.ledger_stream.transactions;
   const legend = Object.entries(DET_STYLE).map(([k]) => detBadge(k)).join(" ");
-  const rows = txns.map(t => `
+  const rows = txns.map(t => {
+    // Compound behaviors (e.g. the alcohol SPLIT on TXN-002) carry
+    // expected_behavior instead of a single determination value.
+    const det = t.expected_determination
+      ? detBadge(t.expected_determination)
+      : `${detBadge("presumptively_unallowable")} <span class="det" style="color:var(--slate);border-color:var(--slate);background:#f8fafc">SPLIT</span><br><span class="cite">${t.expected_behavior}</span>`;
+    return `
     <tr><td class="cite">${t.date}</td><td><strong>${t.vendor}</strong><br><span class="cite">${t.memo} · ${t.gl_account}</span></td>
-    <td class="num">${usd(t.amount)}</td><td>${detBadge(t.expected_determination)}<br>${cite(t.expected_citations)}</td></tr>`).join("");
+    <td class="num">${usd(t.amount)}</td><td>${det}<br>${cite(t.expected_citations)}</td></tr>`;
+  }).join("");
   $("#sentinel").innerHTML = `
     <div class="panel"><h2>Determination legend — seven values, seven behaviors</h2><div class="legend">${legend}</div></div>
     <div class="panel"><h2>Live ledger stream (replay of seed)</h2>
