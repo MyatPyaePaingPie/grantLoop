@@ -122,10 +122,17 @@ function renderAward(a) {
     const proposed = typeof d.proposed_value === "number" ? usd(d.proposed_value) : d.proposed_value;
     return `<tr><td>${name}</td><td class="num">${proposed}</td><td class="num">${awarded}</td><td class="cite">${d.agency_note} ${d.downstream_effect ? "· " + d.downstream_effect : ""}</td></tr>`;
   }).join("");
+  const findings = (a.exceptions && a.exceptions.length) ? `
+    <div class="panel"><h2>Covenant findings — derived, not scripted</h2>
+    <table><tbody>${a.exceptions.map(e => `
+      <tr><td><span class="det" style="color:var(--bad);border-color:var(--bad);background:#fef3f2">${e.severity}</span></td>
+      <td><strong>${e.kind.replace(/_/g, " ")}</strong><br>${e.summary}${e.why_it_matters ? `<br><span class="cite">${e.why_it_matters}</span>` : ""}</td></tr>`).join("")}
+    </tbody></table></div>` : "";
   $("#award").innerHTML = `
     <div class="callout"><strong>They cut the money. They kept the promise.</strong>
-    Covenant diffed the Notice of Award (${a.award_id}${a.federal_share ? ", " + usd(a.federal_share) : ""}) against the proposal.
+    ${a.headline ? a.headline.summary + " " : ""}Covenant diffed the Notice of Award (${a.award_id}${a.federal_share ? ", " + usd(a.federal_share) : ""}) against the proposal.
     Reductions below — and the performance targets were accepted <em>unchanged</em>.</div>
+    ${findings}
     <div class="panel"><h2>Award vs. proposal</h2>
     <table><thead><tr><th>Obligation</th><th class="num">Proposed</th><th class="num">Awarded</th><th>Agency note / downstream effect</th></tr></thead>
     <tbody>${rows}</tbody></table></div>
@@ -205,7 +212,8 @@ async function loadLive() {
   citationsVerified = !!(ledger.citations_verified ?? health.citations_verified);
   setMeta(`award ${award.award_id} · ruleset v${health.ruleset_version} · ${health.model_id}`,
           `LIVE · ${health.mode.toUpperCase()}`, true);
-  renderAward({ award_id: award.award_id, deltas: award.deltas, conditions: award.specific_conditions, lineNames: {} });
+  renderAward({ award_id: award.award_id, deltas: award.deltas, conditions: award.specific_conditions,
+                headline: award.headline, exceptions: award.exceptions, lineNames: {} });
   renderSentinel(ledger.transactions);
   renderDLQ(exceptions.items);
   renderReport(report);

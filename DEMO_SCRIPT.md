@@ -19,13 +19,13 @@
 - Application agent flags: narrative promises **120 youth at a 1:10 ratio**, but the budget funds **2 mentors at 0.5 FTE**. Routes to a human with three concrete resolutions.
 - VO point: the system reads what you *promised*, not just what you wrote.
 
-### 0:45–1:25 — Beat 2: Award handoff — THE MONEY SHOT
-- Upload the Notice of Award. Covenant diffs award vs proposal, on screen:
-  - participant support **$30k → $18k**
-  - outreach **$12k → $8k**
-  - equipment condition attached
-  - performance targets accepted **unchanged at 120 youth**
-- VO: "They cut the money. They kept the promise." (exact framing from plan doc)
+### 0:45–1:25 — Beat 2: Award handoff — THE MONEY SHOT (now DERIVED, not scripted)
+- Upload the Notice of Award. Covenant diffs awarded budget lines vs application and independently finds **three critical findings** (all on the Covenant findings panel, straight from `/api/state/award`):
+  1. **BL-04 cut 40% ($30k → $18k) while PP-1 accepted unchanged at 120 youth.**
+  2. **BL-07 cut 33% ($12k → $8k) while PP-3 unchanged at 4 convenings** — same pattern, second instance: a *rule firing*, not a special case.
+  3. **`award_total_mismatch`: the NOA states $212,000 federal share, but its own budget lines sum to $234,000 — a $22,000 unexplained gap.** The agent reconciles instead of trusting the headline number; drawing funds against an award that disagrees with itself is how recipients end up with questioned costs they never chose.
+- VO: "They cut the money. They kept the promise." Then: "And the award doesn't even add up — Covenant caught that too."
+- Equipment condition attached (BL-08) surfaces here; participant-support cut names 200.308(f)(5) in its downstream effect.
 - Then, unprompted: obligation model, evidence plan, quarterly reporting calendar build themselves. Nobody clicks through steps.
 
 ### 1:25–2:25 — Beat 3: Ledger Sentinel — seven transactions, seven determinations
