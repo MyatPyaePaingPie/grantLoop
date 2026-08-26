@@ -52,6 +52,7 @@ it is the record-day fallback, and a demo path that never touches the network ca
 because of the network.
 
 ```bash
+python -m grantloop.api                    # dashboard + live API on http://127.0.0.1:8080
 python -m grantloop.replay                 # seven transactions, seven determinations
 python -m grantloop.replay --pace 1.5      # narratable pace, for the demo video
 python -m grantloop.replay --dlq TXN-004   # force retry + dead-letter, on camera
@@ -69,6 +70,21 @@ python -m venv .venv && .venv/bin/pip install -e ".[dev]"
 The suite is the acceptance bar for demo beat 3: all seven determination values must fire
 exactly once against the seeded ledger, and no CFR citation may render without a verified
 section and title.
+
+### The read API
+
+`python -m grantloop.api` serves the dashboard and the orchestrator API on one port,
+standard library only. The same route table backs the ASGI app that Cloud Run runs, so the
+recorded demo and the deployed service cannot drift — a test fails at startup if they do.
+
+| Route | Returns |
+|---|---|
+| `/api/health` | mode, model id, project, ruleset version, `citations_verified` |
+| `/api/state/award` | award deltas and specific conditions |
+| `/api/state/ledger?limit=N` | transactions with actual determinations and structured citations |
+| `/api/state/exceptions` | dead-letter queue |
+| `/api/state/report/current` | SF-425 draft, every line traceable, uncertified by construction |
+| `/api/replay` | re-run the fleet |
 
 ### Cloud mode
 

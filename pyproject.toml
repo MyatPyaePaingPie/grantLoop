@@ -13,10 +13,12 @@ cloud = [
   "google-cloud-firestore>=2.16",
   "google-genai>=1.0",
 ]
-dev = ["pytest>=8.0"]
+serve = ["fastapi>=0.110", "uvicorn[standard]>=0.29"]
+dev = ["pytest>=8.0", "fastapi>=0.110", "httpx>=0.27"]
 
 [project.scripts]
 grantloop-replay = "grantloop.replay.__main__:main"
+grantloop-serve = "grantloop.api.__main__:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
