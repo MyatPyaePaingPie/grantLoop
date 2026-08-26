@@ -57,9 +57,11 @@ def test_unresolved_exceptions_include_split_remainders(orch: Orchestrator) -> N
 
 
 def test_health_never_leaks_a_hardcoded_project(orch: Orchestrator) -> None:
+    """No project id may be baked in. conftest strips the env so this is real."""
     health = orch.health()
-    assert health["project"] is None  # unset in the test environment
+    assert health["project"] is None
     assert health["citations_verified"] is True
+    assert health["source"] == "replay"
 
 
 @pytest.mark.parametrize("path", sorted(ROUTES))

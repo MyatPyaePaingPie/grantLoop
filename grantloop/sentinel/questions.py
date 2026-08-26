@@ -115,7 +115,7 @@ class QuestionDrafter:
             response = client.models.generate_content(
                 model=self.config.model_id,
                 contents=prompt,
-                config={"temperature": 0.2, "max_output_tokens": 200},
+                config=_generation_config(),
             )
             text = (getattr(response, "text", "") or "").strip()
         except Exception as exc:
@@ -127,6 +127,25 @@ class QuestionDrafter:
             return DraftedQuestion(fallback, "fallback")
         self.last_error = None
         return DraftedQuestion(text, "gemini", self.config.model_id)
+
+
+def _generation_config() -> dict[str, Any]:
+    """Generation settings for a one-sentence question.
+
+    `max_output_tokens` is generous relative to the answer because on Gemini 3.x
+    thinking tokens are drawn from the same budget. A tight budget does not
+    produce a short answer, it produces a truncated one: the first deploy
+    returned "Is the primary purpose of the Community Chamber" and got rejected
+    by the usability check, so the model lane silently never worked.
+
+    Thinking is disabled outright. Rewriting a known question for a known reader
+    needs no deliberation, and the budget is better spent on the answer.
+    """
+    return {
+        "temperature": 0.2,
+        "max_output_tokens": 2048,
+        "thinking_config": {"thinking_budget": 0},
+    }
 
 
 def _usable(text: str) -> bool:
