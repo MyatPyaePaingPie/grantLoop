@@ -111,3 +111,29 @@ def test_redelivery_does_not_duplicate_downstream_events() -> None:
     twice = Replay(redeliver=True).run()
     emitted = [e for e in twice.events if e["event_type"].startswith("determination.")]
     assert len(emitted) == len({e["event_id"] for e in emitted})
+
+
+def test_ledger_rows_carry_the_money_and_the_verdict() -> None:
+    """The dashboard renders amount and vendor beside the determination.
+
+    A bare determination record would render a row with no money in it, which is
+    how live mode would have silently differed from seed mode on record day.
+    """
+    replay = Replay()
+    replay.run()
+    rows = replay.api_state()["ledger"]["transactions"]
+    for row in rows:
+        assert {"txn_id", "vendor", "amount", "date", "determination", "citations"} <= set(row)
+        assert isinstance(row["amount"], (int, float))
+        # Seed-only expectation fields must never reach the API: live mode has no
+        # "expected" anything, and leaking them would let the UI render a promise
+        # instead of a result.
+        assert not [k for k in row if k.startswith("expected_")]
+
+
+def test_split_amounts_reconcile_to_the_transaction() -> None:
+    replay = Replay()
+    replay.run()
+    for row in replay.api_state()["ledger"]["transactions"]:
+        if row.get("splits"):
+            assert round(sum(s["amount"] for s in row["splits"]), 2) == round(row["amount"], 2)

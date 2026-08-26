@@ -63,6 +63,7 @@ class Replay:
         deterministic_ids(True)  # same seed in, same causation chain out
         self.bus = LocalBus()
         self.result = ReplayResult()
+        self._txns: dict[str, dict[str, Any]] = {}
         self._wire()
 
     def _wire(self) -> None:
@@ -70,6 +71,7 @@ class Replay:
 
     def _on_transaction(self, event: Event) -> list[Event]:
         txn = event.payload
+        self._txns[txn["txn_id"]] = txn
         if self.fail_txn and txn["txn_id"] == self.fail_txn:
             raise RuntimeError(
                 f"simulated handler failure on {txn['txn_id']} — exercising retry and DLQ"
@@ -111,6 +113,21 @@ class Replay:
         self.result.dead_letters = [d.to_dict() for d in self.bus.dead_letters]
         return self.result
 
+    def _ledger_row(self, determination: dict[str, Any]) -> dict[str, Any]:
+        """Merge the transaction with its determination.
+
+        The dashboard renders amount, vendor and memo alongside the verdict, so the
+        API must return the transaction fields too — a bare determination record
+        would render a row with no money in it. Per READ_API_PROPOSAL.md this is the
+        seed shape with `determination` replacing `expected_determination`.
+        """
+        txn = dict(self._txns.get(determination["txn_id"], {}))
+        for key in ("expected_determination", "expected_behavior",
+                    "expected_citations", "citation_note", "note"):
+            txn.pop(key, None)
+        txn.update(determination)
+        return txn
+
     def api_state(self) -> dict[str, Any]:
         """The seed-shaped payloads from dashboard/READ_API_PROPOSAL.md.
 
@@ -133,7 +150,7 @@ class Replay:
                 "citations_verified": self.ruleset.citations_verified,
             },
             "ledger": {
-                "transactions": self.result.determinations,
+                "transactions": [self._ledger_row(d) for d in self.result.determinations],
                 "citations_verified": self.ruleset.citations_verified,
             },
             "exceptions": {"items": self.result.dead_letters},
