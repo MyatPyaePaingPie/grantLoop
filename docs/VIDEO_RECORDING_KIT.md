@@ -48,10 +48,12 @@ Everything needed to record the ~4:00 video in one sitting. VO is word-for-word 
 
 ---
 
-## Splice list (after Cloud Run URL exists)
-- [ ] Console cutaway: Cloud Run services list showing both services green.
-- [ ] Browser hit on `<service-url>/api/health` showing model_id + project.
-- [ ] Optional: re-record beat 3 against the deployed dashboard (badge shows LIVE · CLOUD).
+## Splice list — DEPLOY IS LIVE, record these now
+Service: `https://grantloop-orchestrator-361788129265.us-central1.run.app` (identity-token gated — fine per rules: app need not be public).
+- [ ] Console cutaway: Cloud Run services page in project active-future-506706-s7 showing the service green.
+- [ ] Terminal shot: `curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" https://grantloop-orchestrator-361788129265.us-central1.run.app/api/health` → shows `"mode":"cloud"`, `"model_id":"gemini-3.5-flash"`, `"location":"global"`, model lane with gemini. This single shot is the GCP + Gemini proof.
+- [ ] Beat 3 model moment: the deployed Gemini-drafted escalation question ("Is the primary purpose of the Community Chamber Alliance to engage in lobbying?") — visible on the deployed dashboard's Sentinel tab.
+- [ ] Optional: record beat 3 against the deployed dashboard (badge LIVE · CLOUD) instead of local.
 
 ## Rules check before upload
 - Backend visibly on Google Cloud ✔ (beat 6 cutaways)
