@@ -14,3 +14,8 @@ service-account*.json
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Video build artifacts. The finished cut is committed; the intermediates are
+# regenerable in about four minutes and would add ~50MB of churn per rebuild.
+video/build/*
+!video/build/grantloop-demo.mp4

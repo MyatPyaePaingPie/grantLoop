@@ -23,6 +23,9 @@ serve = ["fastapi>=0.110", "uvicorn[standard]>=0.29"]
 # google-adk is deliberately excluded; the read API does not need it.
 deploy = ["fastapi>=0.110", "uvicorn[standard]>=0.29", "google-genai>=1.0"]
 dev = ["pytest>=8.0", "fastapi>=0.110", "httpx>=0.27"]
+# The video pipeline. Everything here runs locally: no account, no API key, no
+# per-minute cost. Needs `brew install vhs` and `playwright install chromium`.
+video = ["pocket-tts>=3.0", "soundfile>=0.12", "playwright>=1.40", "numpy>=1.26"]
 
 [project.scripts]
 grantloop-replay = "grantloop.replay.__main__:main"

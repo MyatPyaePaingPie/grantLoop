@@ -138,7 +138,7 @@ function renderAward(a) {
     <tbody>${rows}</tbody></table></div>
     <div class="panel"><h2>Specific conditions attached</h2>
     <table><tbody>${a.conditions.map(c =>
-      `<tr><td><strong>${c.condition_id}</strong></td><td>${c.text}</td><td>${cite(c.citation ? [c.citation.section ? c.citation : c.citation] : [])}</td><td class="cite">lifted when: ${c.removal_criteria}</td></tr>`).join("")}
+      `<tr><td><strong>${c.condition_id}</strong></td><td>${c.text}</td><td>${cite(c.citation ? [c.citation.section ? c.citation : c.citation] : [])}</td><td class="cite">${c.removal_criteria ? `lifted when: ${c.removal_criteria}` : "no removal criteria stated"}</td></tr>`).join("")}
     </tbody></table></div>`;
 }
 
@@ -147,7 +147,8 @@ function renderSentinel(txns) {
   const rows = txns.map(t => {
     const detVal = t.determination || t.expected_determination;
     const cites = t.citations || t.expected_citations;
-    const splitNote = t.expected_behavior || (t.splits ? t.rationale : null);
+    const isSplit = Array.isArray(t.splits) ? t.splits.length > 0 : Boolean(t.splits);
+    const splitNote = t.expected_behavior || (isSplit ? t.rationale : null);
     let det = detVal ? detBadge(detVal) : detBadge("presumptively_unallowable");
     if (splitNote) det += ` <span class="det" style="color:var(--slate);border-color:var(--slate);background:#f8fafc">SPLIT</span><br><span class="cite">${splitNote}</span>`;
     if (t.question_for_human) det += `<br><span class="cite">❓ ${t.question_for_human}</span>`;
