@@ -18,6 +18,8 @@
   header h1 span { color: var(--accent); }
   .meta { color: var(--muted); font-size: 13px; }
   .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #eef4ff; color: var(--info); border: 1px solid #d1e0ff; }
+  .badge.live { background: #ecfdf3; color: var(--good); border-color: #abefc6; }
+  .replay-btn { margin-left: auto; font: inherit; font-size: 13px; font-weight: 600; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; cursor: pointer; display: none; }
   nav { display: flex; gap: 4px; padding: 10px 24px 0; background: var(--panel); border-bottom: 1px solid var(--line); }
   nav button { border: 1px solid transparent; border-bottom: none; background: none; padding: 8px 14px; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer; border-radius: 8px 8px 0 0; }
   nav button.active { background: var(--bg); border-color: var(--line); color: var(--ink); font-weight: 600; }
@@ -40,9 +42,10 @@
   .callout strong { display: block; margin-bottom: 2px; }
   .empty { color: var(--muted); font-style: italic; padding: 18px; text-align: center; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .certify { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; margin-top: 14px; }
+  .certify { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; margin-top: 14px; }
   .certify button { background: var(--accent); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
   .certify button:disabled { background: #cbd5e1; cursor: not-allowed; }
+  .statute { font-size: 12px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 10px; margin-top: 8px; font-style: italic; }
   .simulated { position: fixed; bottom: 14px; right: 18px; background: var(--ink); color: #fff; font-size: 12px; padding: 4px 12px; border-radius: 999px; opacity: 0.85; }
   .err { color: var(--bad); padding: 30px; text-align: center; }
 </style>
@@ -51,7 +54,8 @@
 <header>
   <h1>Grant<span>Loop</span></h1>
   <div class="meta" id="org-meta">loading…</div>
-  <span class="badge" id="mode-badge">REPLAY MODE</span>
+  <span class="badge" id="mode-badge">…</span>
+  <button class="replay-btn" id="replay-btn">↻ Re-run fleet</button>
 </header>
 <nav id="tabs">
   <button data-tab="award" class="active">Award Handoff</button>
@@ -68,10 +72,9 @@
 <div class="simulated">SIMULATED DATA — DEMO</div>
 
 <script>
-// Flipped after the eCFR pass: rules VERIFIED 2026-08-26 against the
-// 2026-08-01 point-in-time snapshot (docs/ECFR_VERIFICATION_2026-08-26.md).
-const CITATIONS_VERIFIED = true;
-
+// Live mode: rendered from the orchestrator read API (/api/state/*), which is
+// the fleet's actual output. Seed mode: static fallback rendered from the
+// deterministic seed. The UI computes no domain logic in either mode.
 const DET_STYLE = {
   presumptively_allowable:      { label: "Allowable",            color: "var(--good)",   bg: "#ecfdf3" },
   presumptively_unallowable:    { label: "Unallowable",          color: "var(--bad)",    bg: "#fef3f2" },
@@ -81,9 +84,19 @@ const DET_STYLE = {
   conflicts_with_award_terms:   { label: "Conflicts w/ award",   color: "var(--pink)",   bg: "#fdf2fa" },
   requires_human_determination: { label: "Human decision",       color: "var(--slate)",  bg: "#f8fafc" },
 };
+const REPORT_LINE_LABELS = {
+  federal_share_of_expenditures: "10e. Federal share of expenditures",
+  questioned_costs: "Questioned costs",
+  pending_allocation: "Pending allocation",
+  pending_determination: "Pending determination",
+  pending_documentation: "Pending documentation",
+  pending_prior_approval: "Pending prior approval",
+  blocked_by_award_terms: "Blocked by award terms",
+};
 
 const $ = (sel) => document.querySelector(sel);
-const usd = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const usd = (n) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+let citationsVerified = false;
 
 function detBadge(value) {
   const s = DET_STYLE[value] || { label: value, color: "var(--muted)", bg: "#fff" };
@@ -91,22 +104,17 @@ function detBadge(value) {
 }
 function cite(list) {
   if (!list || !list.length) return "";
-  if (!CITATIONS_VERIFIED) return `<span class="cite unverified">citation pending eCFR verification</span>`;
-  // Accepts both shapes: bare strings ("200.475") from the seed, and the
-  // live API's structured objects {section, paragraph, title}.
+  if (!citationsVerified) return `<span class="cite unverified">citation pending eCFR verification</span>`;
   const fmt = (c) => typeof c === "string"
     ? "2 CFR §" + c
     : (c.label || `2 CFR §${c.section}${c.paragraph ? c.paragraph : ""}`) + (c.title ? ` <em>${c.title}</em>` : "");
   return `<span class="cite">${list.map(fmt).join(" · ")}</span>`;
 }
 
-function renderAward(seed) {
-  const noa = seed.notice_of_award;
-  const lines = Object.fromEntries(seed.application.budget_lines.map(l => [l.line_id, l]));
-  const deltas = noa.AWARD_DELTAS_TO_SURFACE;
-  const rows = deltas.map(d => {
-    const line = lines[d.obligation_ref];
-    const name = line ? line.cost_category : d.obligation_ref;
+function renderAward(a) {
+  // a: {award_id, federal_share?, deltas[], conditions[], lineNames{}}
+  const rows = a.deltas.map(d => {
+    const name = a.lineNames[d.obligation_ref] || d.obligation_ref;
     let awarded;
     if (d.status === "reduced") awarded = `<span class="cut">${usd(d.awarded_value)} ▼</span>`;
     else if (d.status === "unchanged") awarded = `<span class="kept">${typeof d.awarded_value === "number" ? usd(d.awarded_value) : d.awarded_value} — unchanged</span>`;
@@ -116,66 +124,118 @@ function renderAward(seed) {
   }).join("");
   $("#award").innerHTML = `
     <div class="callout"><strong>They cut the money. They kept the promise.</strong>
-    Covenant diffed the Notice of Award (${noa.award_id}, ${usd(noa.federal_share)}) against the proposal.
+    Covenant diffed the Notice of Award (${a.award_id}${a.federal_share ? ", " + usd(a.federal_share) : ""}) against the proposal.
     Reductions below — and the performance targets were accepted <em>unchanged</em>.</div>
     <div class="panel"><h2>Award vs. proposal</h2>
     <table><thead><tr><th>Obligation</th><th class="num">Proposed</th><th class="num">Awarded</th><th>Agency note / downstream effect</th></tr></thead>
     <tbody>${rows}</tbody></table></div>
     <div class="panel"><h2>Specific conditions attached</h2>
-    <table><tbody>${noa.specific_conditions.map(c =>
-      `<tr><td><strong>${c.condition_id}</strong></td><td>${c.text}</td><td>${cite(c.citation ? [c.citation.section] : [])}</td><td class="cite">lifted when: ${c.removal_criteria}</td></tr>`).join("")}
+    <table><tbody>${a.conditions.map(c =>
+      `<tr><td><strong>${c.condition_id}</strong></td><td>${c.text}</td><td>${cite(c.citation ? [c.citation.section ? c.citation : c.citation] : [])}</td><td class="cite">lifted when: ${c.removal_criteria}</td></tr>`).join("")}
     </tbody></table></div>`;
 }
 
-function renderSentinel(seed) {
-  const txns = seed.ledger_stream.transactions;
-  const legend = Object.entries(DET_STYLE).map(([k]) => detBadge(k)).join(" ");
+function renderSentinel(txns) {
+  const legend = Object.keys(DET_STYLE).map(detBadge).join(" ");
   const rows = txns.map(t => {
-    // Live API: `determination` + `citations` (+ `splits`, `rationale`).
-    // Seed: `expected_determination` + `expected_citations` (+ `expected_behavior`).
-    // Live mode never carries expected_* — a promise must not render as a result.
     const detVal = t.determination || t.expected_determination;
     const cites = t.citations || t.expected_citations;
     const splitNote = t.expected_behavior || (t.splits ? t.rationale : null);
     let det = detVal ? detBadge(detVal) : detBadge("presumptively_unallowable");
     if (splitNote) det += ` <span class="det" style="color:var(--slate);border-color:var(--slate);background:#f8fafc">SPLIT</span><br><span class="cite">${splitNote}</span>`;
+    if (t.question_for_human) det += `<br><span class="cite">❓ ${t.question_for_human}</span>`;
     return `
     <tr><td class="cite">${t.date}</td><td><strong>${t.vendor}</strong><br><span class="cite">${t.memo} · ${t.gl_account}</span></td>
     <td class="num">${usd(t.amount)}</td><td>${det}<br>${cite(cites)}</td></tr>`;
   }).join("");
   $("#sentinel").innerHTML = `
     <div class="panel"><h2>Determination legend — seven values, seven behaviors</h2><div class="legend">${legend}</div></div>
-    <div class="panel"><h2>Live ledger stream (replay of seed)</h2>
+    <div class="panel"><h2>Ledger stream</h2>
     <table><thead><tr><th>Date</th><th>Transaction</th><th class="num">Amount</th><th>Sentinel determination</th></tr></thead>
     <tbody>${rows}</tbody></table></div>`;
 }
 
-function renderDLQ() {
-  $("#dlq").innerHTML = `
-    <div class="panel"><h2>Dead-letter queue / exception panel</h2>
-    <div class="empty">No poisoned messages. Handlers retry 5× before landing here — when one does, it shows up loudly, not silently.<br>
-    (Live mode wires this to the Pub/Sub DLQ subscription.)</div></div>`;
+function renderDLQ(items) {
+  const body = (items && items.length)
+    ? `<table><thead><tr><th>Ref</th><th>Attempts</th><th>Last error</th><th>First seen</th></tr></thead><tbody>
+       ${items.map(i => `<tr><td><strong>${i.txn_ref || i.ref}</strong></td><td class="num">${i.attempts}</td><td class="cite">${i.last_error}</td><td class="cite">${i.first_seen}</td></tr>`).join("")}
+       </tbody></table>`
+    : `<div class="empty">No poisoned messages. Handlers retry 5× before landing here — when one does, it shows up loudly, not silently.</div>`;
+  $("#dlq").innerHTML = `<div class="panel"><h2>Dead-letter queue / exception panel</h2>${body}</div>`;
 }
 
-function renderReport(seed) {
-  const r = seed.reporting.first_report;
-  const txns = seed.ledger_stream.transactions;
-  const detOf = (t) => t.determination || t.expected_determination;
-  const disbursed = txns.filter(t => detOf(t) === "presumptively_allowable").reduce((a, t) => a + t.amount, 0);
+function renderReport(r) {
+  // r: API shape {form, certified, certification_gate, lines{}, total_reported,
+  // unresolved_exceptions[], submission} — seed mode synthesizes the same shape.
+  const lineRows = Object.entries(r.lines).map(([k, v]) =>
+    `<tr><td>${REPORT_LINE_LABELS[k] || k}</td><td class="num">${usd(v.amount)}</td>
+     <td class="cite">${v.source_txn_ids && v.source_txn_ids.length ? "↳ " + v.source_txn_ids.join(", ") : ""}</td></tr>`).join("");
+  const gate = r.certification_gate || {};
   $("#report").innerHTML = `
-    <div class="panel"><h2>${r.form} — ${r.report_id} (${r.period_start} → ${r.period_end})</h2>
-    <p class="cite">Due ${r.due_date} · quarterly cadence per specific condition SC-1</p>
-    <table><thead><tr><th>Line</th><th class="num">Amount</th><th>Source</th></tr></thead><tbody>
-      <tr><td>10e. Federal share of expenditures (clean determinations only)</td><td class="num">${usd(disbursed)}</td>
-      <td class="cite">computed from ${txns.length} ledger transactions — every figure click-through to its transaction (live mode)</td></tr>
-      <tr><td>Unresolved exceptions attached</td>
-      <td class="num">${txns.filter(t => detOf(t) !== "presumptively_allowable").length}</td>
-      <td class="cite">nothing certified while exceptions are open — they ride along, visibly</td></tr>
+    <div class="panel"><h2>${r.form}${r.period ? ` (${r.period})` : ""}</h2>
+    <table><thead><tr><th>Line</th><th class="num">Amount</th><th>Source transactions</th></tr></thead><tbody>
+      ${lineRows}
+      <tr><td><strong>Total reported (reconciles to the ledger to the cent)</strong></td><td class="num"><strong>${usd(r.total_reported)}</strong></td><td></td></tr>
     </tbody></table>
+    <p class="cite" style="margin-top:8px">Unresolved exceptions attached, riding along visibly: ${r.unresolved_exceptions.length ? r.unresolved_exceptions.join(", ") : "none"}</p>
     <div class="certify">
-      <button disabled title="Human-authority boundary: only the certifying official may certify">Certify &amp; submit</button>
-      <span class="cite">Waits for ${r.certifying_official}. The system assembles; a human certifies. Export is labelled <strong>simulated</strong>.</span>
+      <div>
+        <button disabled title="Human-authority boundary: only an official authorized to legally bind the recipient may certify">Certify &amp; submit</button>
+        <div class="cite" style="margin-top:6px">Uncertified by construction ${gate.citation ? "— " + cite([gate.citation]) : ""}. The system assembles; a human certifies. Submission mode: <strong>${(r.submission && r.submission.mode) || "simulated"}</strong>.</div>
+        ${gate.statement ? `<div class="statute">"${gate.statement}"</div>` : ""}
+      </div>
     </div></div>`;
+}
+
+function setMeta(text, mode, live) {
+  $("#org-meta").textContent = text;
+  const b = $("#mode-badge");
+  b.textContent = mode;
+  b.classList.toggle("live", !!live);
+  $("#replay-btn").style.display = live ? "inline-block" : "none";
+}
+
+async function j(url) { const r = await fetch(url); if (!r.ok) throw new Error(`${url} → ${r.status}`); return r.json(); }
+
+async function loadLive() {
+  const health = await j("/api/health");
+  const [award, ledger, exceptions, report] = await Promise.all([
+    j("/api/state/award"), j("/api/state/ledger"), j("/api/state/exceptions"), j("/api/state/report/current"),
+  ]);
+  citationsVerified = !!(ledger.citations_verified ?? health.citations_verified);
+  setMeta(`award ${award.award_id} · ruleset v${health.ruleset_version} · ${health.model_id}`,
+          `LIVE · ${health.mode.toUpperCase()}`, true);
+  renderAward({ award_id: award.award_id, deltas: award.deltas, conditions: award.specific_conditions, lineNames: {} });
+  renderSentinel(ledger.transactions);
+  renderDLQ(exceptions.items);
+  renderReport(report);
+}
+
+async function loadSeed() {
+  const seed = await j("../seed/riverbend_scenario.json");
+  citationsVerified = true; // rules v1.0.0, eCFR-verified 2026-08-26
+  const noa = seed.notice_of_award;
+  setMeta(`${seed.org.legal_name} · UEI ${seed.org.uei} · award ${noa.award_id}`, "REPLAY (SEED)", false);
+  renderAward({
+    award_id: noa.award_id, federal_share: noa.federal_share,
+    deltas: noa.AWARD_DELTAS_TO_SURFACE, conditions: noa.specific_conditions,
+    lineNames: Object.fromEntries(seed.application.budget_lines.map(l => [l.line_id, l.cost_category])),
+  });
+  const txns = seed.ledger_stream.transactions;
+  renderSentinel(txns);
+  renderDLQ([]);
+  const detOf = (t) => t.determination || t.expected_determination;
+  const clean = txns.filter(t => detOf(t) === "presumptively_allowable");
+  const r = seed.reporting.first_report;
+  renderReport({
+    form: `${r.form} — ${r.report_id}`, period: `${r.period_start} → ${r.period_end}`,
+    certified: false,
+    certification_gate: { citation: { label: "2 CFR 200.415(a)" }, statement: null },
+    lines: { federal_share_of_expenditures: { amount: clean.reduce((a, t) => a + t.amount, 0), source_txn_ids: clean.map(t => t.txn_id) } },
+    total_reported: txns.reduce((a, t) => a + t.amount, 0),
+    unresolved_exceptions: txns.filter(t => detOf(t) !== "presumptively_allowable").map(t => t.txn_id),
+    submission: { mode: "simulated" },
+  });
 }
 
 document.getElementById("tabs").addEventListener("click", (e) => {
@@ -183,17 +243,15 @@ document.getElementById("tabs").addEventListener("click", (e) => {
   document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b === btn));
   document.querySelectorAll("main section").forEach(s => s.classList.toggle("active", s.id === btn.dataset.tab));
 });
+document.getElementById("replay-btn").addEventListener("click", async () => {
+  await fetch("/api/replay").catch(() => {});
+  loadLive().catch(() => {});
+});
 
-fetch("../seed/riverbend_scenario.json")
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(seed => {
-    $("#org-meta").textContent = `${seed.org.legal_name} · UEI ${seed.org.uei} · award ${seed.notice_of_award.award_id}`;
-    renderAward(seed); renderSentinel(seed); renderDLQ(); renderReport(seed);
-  })
-  .catch(err => {
-    document.querySelector("main").innerHTML =
-      `<div class="err">Could not load seed data (${err.message}). Serve from the repo root, e.g. <code>python3 -m http.server</code>, then open /dashboard/.</div>`;
-  });
+loadLive().catch(() => loadSeed()).catch(err => {
+  document.querySelector("main").innerHTML =
+    `<div class="err">Could not load data (${err.message}). Run <code>python -m grantloop.api</code> and open /dashboard/, or serve the repo root statically.</div>`;
+});
 </script>
 </body>
 </html>
