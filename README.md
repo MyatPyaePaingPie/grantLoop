@@ -1,6 +1,6 @@
 # GrantLoop
 
-🔧 **building** — Ledger Sentinel and the deterministic replay CLI are working and tested. Citations are eCFR-verified. Cloud deploy is next.
+🔧 **building** — Covenant, Ledger Sentinel, replay CLI and the read API are working and tested. Citations are eCFR-verified. Cloud deploy is next.
 
 > Most grant software remembers the documents. GrantLoop remembers the promises.
 
@@ -80,7 +80,7 @@ recorded demo and the deployed service cannot drift — a test fails at startup 
 | Route | Returns |
 |---|---|
 | `/api/health` | mode, model id, project, ruleset version, `citations_verified` |
-| `/api/state/award` | award deltas and specific conditions |
+| `/api/state/award` | Covenant-derived deltas, obligations, exceptions, headline |
 | `/api/state/ledger?limit=N` | transactions with actual determinations and structured citations |
 | `/api/state/exceptions` | dead-letter queue |
 | `/api/state/report/current` | SF-425 draft, every line traceable, uncertified by construction |

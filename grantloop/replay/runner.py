@@ -18,6 +18,7 @@ from typing import Any, Callable
 
 from ..events import Event, LocalBus, new_event
 from ..events.envelope import deterministic_ids
+from ..covenant import Covenant
 from ..sentinel import Sentinel, load_ruleset
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -58,6 +59,8 @@ class Replay:
         self.seed = json.loads(Path(seed_path or DEFAULT_SEED).read_text())
         self.ruleset = load_ruleset()
         self.sentinel = Sentinel(self.ruleset, self.seed["notice_of_award"], self.seed["org"])
+        self.covenant = Covenant(self.seed["application"], self.seed["notice_of_award"])
+        self.obligation_model = self.covenant.build()
         self.fail_txn = fail_txn
         self.redeliver = redeliver
         deterministic_ids(True)  # same seed in, same causation chain out
@@ -145,7 +148,12 @@ class Replay:
             "award": {
                 "award_id": noa["award_id"],
                 "period_of_performance": noa["period_of_performance"],
-                "deltas": noa["AWARD_DELTAS_TO_SURFACE"],
+                # Derived by the Covenant Agent, not read from the seed. The seed's
+                # AWARD_DELTAS_TO_SURFACE is now a test fixture, not an input.
+                "deltas": [d.to_dict() for d in self.obligation_model.deltas],
+                "obligations": [o.to_dict() for o in self.obligation_model.obligations],
+                "exceptions": self.obligation_model.exceptions,
+                "headline": self.obligation_model.headline,
                 "specific_conditions": noa["specific_conditions"],
                 "citations_verified": self.ruleset.citations_verified,
             },

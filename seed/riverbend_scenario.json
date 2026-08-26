@@ -181,7 +181,84 @@
           "section": "200.208"
         }
       }
-    ]
+    ],
+    "awarded_budget_lines": [
+      {
+        "line_id": "BL-01",
+        "cost_category": "Personnel — Program Director 1.0 FTE",
+        "amount": 82000
+      },
+      {
+        "line_id": "BL-02",
+        "cost_category": "Personnel — Youth Mentors (2 x 0.5 FTE)",
+        "amount": 46000
+      },
+      {
+        "line_id": "BL-03",
+        "cost_category": "Fringe benefits @ 22%",
+        "amount": 28160
+      },
+      {
+        "line_id": "BL-04",
+        "cost_category": "Participant support — youth stipends",
+        "amount": 18000
+      },
+      {
+        "line_id": "BL-05",
+        "cost_category": "Travel — staff training",
+        "amount": 6000
+      },
+      {
+        "line_id": "BL-06",
+        "cost_category": "Supplies and materials",
+        "amount": 9000
+      },
+      {
+        "line_id": "BL-07",
+        "cost_category": "Community convening / outreach events",
+        "amount": 8000
+      },
+      {
+        "line_id": "BL-08",
+        "cost_category": "Equipment — program laptops (4)",
+        "amount": 6400
+      },
+      {
+        "line_id": "BL-09",
+        "cost_category": "Rent and utilities (allocated)",
+        "amount": 14000
+      },
+      {
+        "line_id": "BL-10",
+        "cost_category": "Indirect",
+        "amount": 16440
+      }
+    ],
+    "awarded_performance_targets": [
+      {
+        "id": "PP-1",
+        "metric": "youth enrolled",
+        "target": 120,
+        "cadence": "semiannual"
+      },
+      {
+        "id": "PP-2",
+        "metric": "mentor match retention at 6 months",
+        "target": 75,
+        "unit": "percent",
+        "cadence": "semiannual"
+      },
+      {
+        "id": "PP-3",
+        "metric": "convenings held",
+        "target": 4,
+        "cadence": "annual"
+      }
+    ],
+    "conditions_by_line": {
+      "BL-08": "SC-2"
+    },
+    "RECONCILIATION_NOTE": "The awarded budget lines above sum to $234,000, but this NOA states a federal share of $212,000 -- a $22,000 unexplained gap. That is deliberate and it is a real compliance finding, not a seed bug: an award whose stated total does not match its own budget lines is exactly what a Covenant Agent should catch on award day. The gap is surfaced as a reconciliation exception rather than silently absorbed. Resolve it in the seed only if the demo needs a clean total; the exception is the more impressive behavior."
   },
   "ledger_stream": {
     "note": "Fired in order on demand. Each is chosen to land on a DIFFERENT determination value — that is the point. Seven determinations, seven visibly different behaviors.",
