@@ -55,32 +55,35 @@ award. A ruleset that only knows (a) will wrongly reject a youth incentive prize
 **200.453 covers computing devices.** Paragraph (c) allows charging them as direct costs when they are
 essential and allocable but not solely dedicated to the award. This changes the laptop beat, below.
 
-## ⛔ Two things the demo script needs to know
+## ✅ Two determination questions, both now settled
 
 <details>
-<summary>TXN-005 — the laptop block does not hold on CFR alone</summary>
+<summary>TXN-005 — the laptop block does not hold on CFR alone (resolved)</summary>
 
 Four laptops at $6,400 is $1,600 a unit. That is below the **$10,000** special-purpose prior-approval
-threshold at 200.439(b)(2), and 200.453(c) expressly permits charging computing devices as direct costs.
+threshold at 200.439(b)(2), and 200.453(c) expressly permits charging computing devices as direct costs
+when they are essential and allocable but not solely dedicated to the award.
 
-So the Uniform Guidance does **not** block this purchase. Award term **SC-2** does. The Sentinel must
-lead with the award term and cite the CFR as context. A judge who knows this material will catch a
-Sentinel that claims 200.439 alone forbids a $1,600 laptop — and that is the one moment where being
-caught costs the most, because the whole pitch is that we cite correctly.
+So the Uniform Guidance does **not** block this purchase. Award term **SC-2** does.
 
-Good news: this makes the beat *better*. "The regulation permits this; your award does not" is a
-sharper demonstration of the provenance chain than a generic CFR rejection.
+Resolved by aligning the seed to `DEMO_SCRIPT.md`: the determination is now
+`conflicts_with_award_terms`, because the conflict is with the award, not the regulation. The Sentinel
+leads with SC-2 and cites the CFR as context.
+
+This makes the beat sharper, not weaker. "The regulation permits this; your award does not" is a better
+demonstration of the provenance chain than a generic CFR rejection — and it is the one moment where a
+judge who knows this material would otherwise catch us.
 
 </details>
 
 <details>
-<summary>TXN-006 — pre-award cost is arguably the wrong determination value</summary>
+<summary>TXN-006 — pre-award determination (resolved)</summary>
 
-On a strict reading, 200.458 lands on `requires_prior_approval` ("allowable ... only with the written
-approval of the Federal agency"), not `conflicts_with_award_terms`.
+200.458 makes pre-award costs allowable only to the extent they would have been allowable after the
+start date **and** only with the written approval of the Federal agency. On a plain reading that is
+`requires_prior_approval`, which is what `DEMO_SCRIPT.md` already had.
 
-Left as-is so all seven determinations still fire exactly once, which is the point of the seed. But it
-is a modeling choice, not a reading of the regulation, and someone should own it before record day.
+Seed updated to match. All seven determination values still fire exactly once.
 
 </details>
 

@@ -269,14 +269,14 @@
         "attachments": [
           "quote.pdf"
         ],
-        "expected_determination": "requires_prior_approval",
+        "expected_determination": "conflicts_with_award_terms",
         "expected_citations": [
           "200.439(b)",
           "200.453(c)",
           "200.208"
         ],
         "note": "Blocks against specific condition SC-2. Sentinel must cite the AWARD TERM, not just the CFR — that is the provenance chain doing visible work.",
-        "citation_note": "Verified 2026-08-26. At $1,600 per unit these laptops are below the 200.439(b)(2) $10,000 special-purpose prior-approval threshold, and 200.453(c) expressly allows charging computing devices as direct costs when essential and allocable but not solely dedicated. So 2 CFR alone does NOT block this purchase. The block is award term SC-2. The Sentinel must lead with the award term and cite the CFR as context, or a judge who knows the Uniform Guidance will catch it."
+        "citation_note": "Verified 2026-08-26, determination aligned to DEMO_SCRIPT.md. At $1,600 per unit these laptops sit BELOW the 200.439(b)(2) $10,000 special-purpose prior-approval threshold, and 200.453(c) expressly allows charging computing devices as direct costs when essential and allocable but not solely dedicated. 2 CFR therefore does NOT block this purchase - award term SC-2 does. That is why the value is conflicts_with_award_terms and not requires_prior_approval: the conflict is with the award, not the regulation. The Sentinel must lead with SC-2 and cite the CFR as context."
       },
       {
         "txn_id": "TXN-006",
@@ -288,13 +288,13 @@
         "attachments": [
           "receipt.pdf"
         ],
-        "expected_determination": "conflicts_with_award_terms",
+        "expected_determination": "requires_prior_approval",
         "expected_citations": [
           "200.458",
           "200.403(h)"
         ],
         "note": "Dated BEFORE period of performance start (2026-10-01). Pre-award cost.",
-        "citation_note": "Verified 2026-08-26. 200.458 makes pre-award costs allowable only to the extent they would have been allowable after the start date AND only with written agency approval; 200.403(h) requires costs to be incurred during the approved budget period. OPEN QUESTION for the demo: on a strict reading 200.458 lands on requires_prior_approval, not conflicts_with_award_terms. Kept as-is so all seven determinations fire once - flag for the demo script."
+        "citation_note": "Verified 2026-08-26, determination aligned to DEMO_SCRIPT.md. 200.458 makes pre-award costs allowable only to the extent they would have been allowable after the start date AND only with the written approval of the Federal agency - that is requires_prior_approval on a plain reading. 200.403(h) supplies the budget-period requirement. Dated 2026-09-18, before the 2026-10-01 period-of-performance start."
       },
       {
         "txn_id": "TXN-007",
