@@ -7,9 +7,12 @@ dependency: the offline path never imports this module.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from .routes import Orchestrator, ROUTES
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def create_app() -> Any:
@@ -42,8 +45,39 @@ def create_app() -> Any:
     def report_current() -> dict[str, Any]:
         return orchestrator.report_current()
 
+    @app.get("/api/replay")
+    def replay() -> dict[str, Any]:
+        """Re-run the fleet. The dashboard's replay button calls this."""
+        orchestrator.refresh()
+        return {"status": "replayed"}
+
     _assert_routes_match(app)
+    _mount_dashboard(app)
     return app
+
+
+def _mount_dashboard(app: Any) -> None:
+    """Serve the dashboard from the same origin as the API.
+
+    The deployed URL is what judges open and what the demo video shows, so it has
+    to render the product rather than a JSON blob. Same origin also means the
+    dashboard's fetch calls need no CORS round trip.
+    """
+    from fastapi.responses import RedirectResponse
+    from fastapi.staticfiles import StaticFiles
+
+    dashboard = ROOT / "dashboard"
+    if not dashboard.is_dir():
+        return
+
+    @app.get("/", include_in_schema=False)
+    def index() -> Any:
+        return RedirectResponse("/dashboard/")
+
+    # The dashboard reads the seed directly when live data is unavailable, so the
+    # seed has to be reachable at the same relative path it uses locally.
+    app.mount("/seed", StaticFiles(directory=str(ROOT / "seed")), name="seed")
+    app.mount("/dashboard", StaticFiles(directory=str(dashboard), html=True), name="dashboard")
 
 
 def _assert_routes_match(app: Any) -> None:

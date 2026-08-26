@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from typing import ClassVar
 
 
 @dataclass(frozen=True)
@@ -24,6 +25,12 @@ class Config:
     model_id: str
     location: str
     topic_prefix: str
+
+    #: Vertex serves Gemini 3.x from `global` only. Every regional endpoint we probed
+    #: returns 404 for gemini-3.5-flash, which reads like an auth failure and is not
+    #: one. Verified against active-future-506706-s7 on 2026-08-26: global 200,
+    #: us-central1 404. This default is load-bearing, not cosmetic.
+    DEFAULT_LOCATION: ClassVar[str] = "global"
 
     @property
     def offline(self) -> bool:
@@ -45,6 +52,6 @@ def load(env: dict[str, str] | None = None) -> Config:
     return Config(
         project=project,
         model_id=e.get("MODEL_ID", "gemini-3.5-flash"),
-        location=e.get("GOOGLE_CLOUD_LOCATION", "us-central1"),
+        location=e.get("GOOGLE_CLOUD_LOCATION", Config.DEFAULT_LOCATION),
         topic_prefix=e.get("GRANTLOOP_TOPIC_PREFIX", "grantloop"),
     )

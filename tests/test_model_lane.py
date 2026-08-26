@@ -159,3 +159,15 @@ def test_agent_instructions_forbid_self_answering() -> None:
     assert "do not decide allowability yourself" in SENTINEL_INSTRUCTION.lower()
     assert "silence is never approval" in SENTINEL_INSTRUCTION.lower()
     assert "never state a dollar figure the tool did not return" in COVENANT_INSTRUCTION.lower()
+
+
+def test_default_vertex_location_is_global() -> None:
+    """Gemini 3.x is served from `global` only.
+
+    Every regional endpoint returns 404 for gemini-3.5-flash, and a 404 on a
+    publisher model reads like an auth failure while being nothing of the kind.
+    Verified directly against the project on 2026-08-26: global 200, us-central1 404.
+    This default cost the team a day the first time around.
+    """
+    assert load({}).location == "global"
+    assert load({"GOOGLE_CLOUD_LOCATION": "europe-west4"}).location == "europe-west4"

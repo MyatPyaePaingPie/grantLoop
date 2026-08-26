@@ -10,7 +10,7 @@ COPY schema/ ./schema/
 COPY seed/ ./seed/
 COPY dashboard/ ./dashboard/
 
-RUN pip install --no-cache-dir ".[serve]"
+RUN pip install --no-cache-dir ".[deploy]"
 
 # Cloud Run injects PORT. GOOGLE_CLOUD_PROJECT and MODEL_ID are set at deploy
 # time; neither is baked into the image.
