@@ -1,6 +1,6 @@
 # GrantLoop
 
-🔧 **building** — Covenant, Ledger Sentinel, replay CLI and the read API are working and tested. Citations are eCFR-verified. Cloud deploy is next.
+✅ **deployed** — live on Cloud Run with Gemini 3.5 answering. Covenant, Ledger Sentinel, replay CLI and the read API are working, citations are eCFR-verified, 92 tests passing. Demo video is the remaining gate.
 
 > Most grant software remembers the documents. GrantLoop remembers the promises.
 
@@ -17,6 +17,7 @@ and reporting as one living object. Built for the All Things Agentic hackathon (
 | GCP + Gemini validation, and the blocker | [`docs/GCP_VALIDATION_2026-08-26.md`](docs/GCP_VALIDATION_2026-08-26.md) |
 | eCFR verification of every citation | [`docs/ECFR_VERIFICATION_2026-08-26.md`](docs/ECFR_VERIFICATION_2026-08-26.md) |
 | Architecture diagram | [`docs/diagrams/architecture.png`](docs/diagrams/architecture.png) |
+| Live deployment, and four things that broke | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) |
 
 ## The lineage
 
