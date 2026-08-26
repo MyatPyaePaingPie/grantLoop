@@ -16,6 +16,14 @@ from ..paths import DASHBOARD, SEED
 
 
 def create_app() -> Any:
+    """Build the ASGI app by registering the shared route table.
+
+    Routes are generated from ROUTES rather than hand-written decorators. A
+    hand-written list can drift from the dev server the demo was recorded
+    against, and the test that caught that drift needs FastAPI installed, so it
+    silently skips on machines that only run the offline path. Generating them
+    makes the drift impossible instead of merely detected.
+    """
     from fastapi import FastAPI, Query
     from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,25 +33,8 @@ def create_app() -> Any:
         CORSMiddleware, allow_origins=["*"], allow_methods=["GET"], allow_headers=["*"]
     )
 
-    @app.get("/api/health")
-    def health() -> dict[str, Any]:
-        return orchestrator.health()
-
-    @app.get("/api/state/award")
-    def award() -> dict[str, Any]:
-        return orchestrator.award()
-
-    @app.get("/api/state/ledger")
-    def ledger(limit: int = Query(50, ge=1, le=500)) -> dict[str, Any]:
-        return orchestrator.ledger(limit=limit)
-
-    @app.get("/api/state/exceptions")
-    def exceptions() -> dict[str, Any]:
-        return orchestrator.exceptions()
-
-    @app.get("/api/state/report/current")
-    def report_current() -> dict[str, Any]:
-        return orchestrator.report_current()
+    for path, handler_name in ROUTES.items():
+        _register(app, path, getattr(orchestrator, handler_name), Query)
 
     @app.get("/api/replay")
     def replay() -> dict[str, Any]:
@@ -54,6 +45,25 @@ def create_app() -> Any:
     _assert_routes_match(app)
     _mount_dashboard(app)
     return app
+
+
+def _register(app: Any, path: str, handler: Any, Query: Any) -> None:
+    """Attach one orchestrator method as a GET route.
+
+    `ledger` is the only route taking a query parameter; everything else is a
+    plain read. Kept explicit rather than reflected off the signature, because a
+    surprise parameter should break loudly here rather than silently become part
+    of the public API.
+    """
+    if path == "/api/state/ledger":
+        @app.get(path, name="ledger")
+        def _ledger(limit: int = Query(50, ge=1, le=500)) -> dict[str, Any]:
+            return handler(limit=limit)
+        return
+
+    @app.get(path, name=path.strip("/").replace("/", "_"))
+    def _read() -> dict[str, Any]:
+        return handler()
 
 
 def _mount_dashboard(app: Any) -> None:

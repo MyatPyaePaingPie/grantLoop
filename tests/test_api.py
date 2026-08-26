@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import threading
+from pathlib import Path
 from http.server import HTTPServer
 from functools import partial
 from urllib.request import urlopen
@@ -125,3 +126,23 @@ def test_asgi_app_declares_every_route() -> None:
     app = create_app()
     served = {r.path for r in app.routes if getattr(r, "path", "").startswith("/api/")}
     assert set(ROUTES) <= served
+
+
+def test_asgi_routes_are_generated_not_hand_written() -> None:
+    """Runs without FastAPI, so it cannot skip on an offline-only machine.
+
+    The parity guarantee between the recorded demo surface and the deployed one
+    has to hold on every machine, not only ones that installed the dev extras.
+    A teammate's run showed 2 skips to our 1 for exactly this reason: the test
+    above needs FastAPI, so on their machine the drift guard was simply absent.
+
+    Generating the routes from ROUTES makes drift impossible rather than merely
+    detected; this test enforces that they stay generated.
+    """
+    source = (Path(__file__).resolve().parents[1] / "grantloop" / "api" / "app.py").read_text()
+    assert "for path, handler_name in ROUTES.items():" in source, (
+        "ASGI routes must be generated from ROUTES; a hand-written list can drift "
+        "from the dev server on machines where the parity test skips."
+    )
+    for path in ROUTES:
+        assert f'@app.get("{path}")' not in source, f"{path} is hand-written; generate it"
