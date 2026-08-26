@@ -35,7 +35,7 @@ Live stream over Pub/Sub (replay CLI drives the deterministic seed; doubles as r
 |---|---|
 | Alcohol in event catering → split | `presumptively_unallowable` |
 | Rent → flagged for allocation | `requires_allocation` |
-| Laptops → blocked by the award's own equipment condition (CFR + award term cited) | `conflicts_with_award_terms` |
+| Laptops → below the org's own $5,000 capitalization threshold AND the CFR's $10,000 — supplies under 200.453(c), the regulation permits them; **the block is award condition SC-2 and only SC-2** | `conflicts_with_award_terms` |
 | Pre-award registration → caught by date | `requires_prior_approval` |
 | Chamber dues → escalated, human-only call | `requires_human_determination` |
 | (from seed) receipt-less expense | `missing_documentation` |

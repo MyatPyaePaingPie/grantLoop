@@ -91,9 +91,13 @@ function detBadge(value) {
 }
 function cite(list) {
   if (!list || !list.length) return "";
-  return CITATIONS_VERIFIED
-    ? `<span class="cite">2 CFR ${list.map(c => "§" + c).join(", ")}</span>`
-    : `<span class="cite unverified">citation pending eCFR verification</span>`;
+  if (!CITATIONS_VERIFIED) return `<span class="cite unverified">citation pending eCFR verification</span>`;
+  // Accepts both shapes: bare strings ("200.475") from the seed, and the
+  // live API's structured objects {section, paragraph, title}.
+  const fmt = (c) => typeof c === "string"
+    ? "§" + c
+    : `§${c.section}${c.paragraph ? c.paragraph : ""}${c.title ? ` <em>${c.title}</em>` : ""}`;
+  return `<span class="cite">2 CFR ${list.map(fmt).join(", ")}</span>`;
 }
 
 function renderAward(seed) {
