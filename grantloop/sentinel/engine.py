@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from typing import Any
 
+from .questions import QuestionDrafter
 from .rules import Citation, RuleSet
 
 
@@ -79,6 +80,7 @@ class Determination:
     rationale: str
     citations: list[Citation] = field(default_factory=list)
     question_for_human: str | None = None
+    question_source: str = "fallback"
     options: list[dict[str, Any]] = field(default_factory=list)
     award_term: str | None = None
 
@@ -94,6 +96,7 @@ class Determination:
             "citations": [c.to_dict() for c in self.citations],
             "rationale": self.rationale,
             "question_for_human": self.question_for_human,
+            "question_source": self.question_source,
             "options": self.options,
             "award_term": self.award_term,
         }
@@ -106,10 +109,15 @@ def _d(value: str) -> date:
 class Sentinel:
     """Classifies transactions against the ruleset and one award's terms."""
 
-    def __init__(self, ruleset: RuleSet, award: dict[str, Any], org: dict[str, Any] | None = None):
+    def __init__(self, ruleset: RuleSet, award: dict[str, Any], org: dict[str, Any] | None = None,
+                 drafter: QuestionDrafter | None = None):
         self.rules = ruleset
         self.award = award
         self.org = org or {}
+        #: Drafts the human-facing question on an escalation. Never touches the
+        #: determination itself, and falls back to the rule's static question when
+        #: the model is unreachable.
+        self.drafter = drafter or QuestionDrafter()
         self.pop = award.get("period_of_performance", {})
         self.conditions = award.get("specific_conditions", [])
 
@@ -246,18 +254,26 @@ class Sentinel:
             rule = hit["rule"]
             question = rule.get("human_question")
             if question and not self._org_knows(question["fact_required"]):
+                rationale = (
+                    f"Matched {rule['title']} on {hit['matched']}. The determination turns on a "
+                    "fact about the counterparty that is not present in the transaction, so the "
+                    "Sentinel asks rather than guesses."
+                )
+                citation = self.rules.citation(rule["id"])
+                drafted = self.drafter.draft(
+                    txn=txn, rule_title=rule["title"], citation=citation.label,
+                    rationale=rationale, fact=question["fact_required"],
+                    fallback=question["question"],
+                )
                 return Determination(
                     txn_id=txn["txn_id"],
                     determination="requires_human_determination",
                     splits=[],
-                    citations=[self.rules.citation(rule["id"])],
-                    question_for_human=question["question"],
+                    citations=[citation],
+                    question_for_human=drafted.text,
+                    question_source=drafted.source,
                     options=question["options"],
-                    rationale=(
-                        f"Matched {rule['title']} on {hit['matched']}. The determination turns on a "
-                        "fact about the counterparty that is not present in the transaction, so the "
-                        "Sentinel asks rather than guesses."
-                    ),
+                    rationale=rationale,
                 )
             return Determination(
                 txn_id=txn["txn_id"],

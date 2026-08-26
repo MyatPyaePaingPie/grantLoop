@@ -16,6 +16,7 @@ and reporting as one living object. Built for the All Things Agentic hackathon (
 | Riverbend demo scenario / replay seed | [`seed/riverbend_scenario.json`](seed/riverbend_scenario.json) |
 | GCP + Gemini validation, and the blocker | [`docs/GCP_VALIDATION_2026-08-26.md`](docs/GCP_VALIDATION_2026-08-26.md) |
 | eCFR verification of every citation | [`docs/ECFR_VERIFICATION_2026-08-26.md`](docs/ECFR_VERIFICATION_2026-08-26.md) |
+| Architecture diagram | [`docs/diagrams/architecture.png`](docs/diagrams/architecture.png) |
 
 ## The lineage
 
@@ -34,6 +35,11 @@ walk back to the sentence in the proposal that promised it. That provenance chai
 differentiator, not the agent count.
 
 ## Architecture
+
+![GrantLoop architecture](docs/diagrams/architecture.png)
+
+The diagram is generated from `schema/EVENT_CONTRACT.md` by
+`docs/diagrams/build_architecture.py`, so the topic list on it cannot drift from the contract.
 
 Two Cloud Run services, five agents, real Pub/Sub between all of them. No agent ever calls another
 agent — every transition is an event carrying `causation_id`, and every handler is idempotent on
@@ -97,6 +103,21 @@ export MODEL_ID=gemini-3.5-flash          # single swap point for model access
 
 No project id is hardcoded anywhere. The project moved once already; the model id is
 expected to move again.
+
+### Where the model is used, and where it is not
+
+Gemini 3.5 drafts the human-facing question when the Ledger Sentinel escalates, grounded in
+the transaction and the rule that fired. It never decides a determination: that stays a
+deterministic rule over verified citations, because a verdict has to be reproducible and
+defensible against a paragraph number.
+
+The ADK fleet in `grantloop/adk/` wraps those deterministic engines as tools, so the agents
+plan and explain while the regulation is applied by code. An agent asked directly whether a
+cost is allowable answers differently on different days; an agent that must call
+`classify_transaction` answers the same way every time and can say which paragraph produced it.
+
+Offline, or whenever Vertex is unreachable, the escalation question falls back to the rule's
+own static text. The fallback is never worse than the behaviour before the model existed.
 
 ## Status
 

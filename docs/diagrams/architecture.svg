@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120">
+<defs>
+      <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+              markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,1 L9,5 L0,9 z" fill="#c3ced9"/>
+      </marker>
+      <marker id="bus" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+              markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,1 L9,5 L0,9 z" fill="#8a4fbd"/>
+      </marker>
+      <marker id="human" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6"
+              markerHeight="6" orient="auto-start-reverse">
+        <path d="M0,1 L9,5 L0,9 z" fill="#b8531a"/>
+      </marker>
+    </defs>
+<rect width="1600" height="1120" fill="#ffffff"/>
+<text x="60" y="58" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" fill="#12181f" font-weight="700" text-anchor="start" letter-spacing="-0.5">GrantLoop</text>
+<text x="60" y="82" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">Promise-to-proof agent fleet for federal grants</text>
+<text x="1540" y="58" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#5b6b7c" font-weight="normal" text-anchor="end" letter-spacing="0">Google Cloud</text>
+<text x="1540" y="78" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="end" letter-spacing="0">2 Cloud Run services  ·  Pub/Sub  ·  Firestore  ·  Vertex AI</text>
+<line x1="60" y1="100" x2="1540" y2="100" stroke="#c3ced9"/>
+<text x="60" y="130" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="700" text-anchor="start" letter-spacing="1.4">THE LINEAGE</text>
+<rect x="60" y="142" width="55.6" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="87.8" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">NOFO</text>
+<path d="M120.6,157 L142.6,157" stroke="#c3ced9" stroke-width="1.4" fill="none" marker-end="url(#head)"/>
+<rect x="149.6" y="142" width="107.4" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="203.3" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">application</text>
+<path d="M262.0,157 L284.0,157" stroke="#c3ced9" stroke-width="1.4" fill="none" marker-end="url(#head)"/>
+<rect x="291.0" y="142" width="63.0" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="322.5" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">award</text>
+<path d="M359.0,157 L381.0,157" stroke="#c3ced9" stroke-width="1.4" fill="none" marker-end="url(#head)"/>
+<rect x="388.0" y="142" width="188.8" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="482.4" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">transaction + evidence</text>
+<path d="M581.8,157 L603.8,157" stroke="#c3ced9" stroke-width="1.4" fill="none" marker-end="url(#head)"/>
+<rect x="610.8" y="142" width="70.4" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="646.0" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">report</text>
+<path d="M686.1999999999999,157 L708.1999999999999,157" stroke="#c3ced9" stroke-width="1.4" fill="none" marker-end="url(#head)"/>
+<rect x="715.1999999999999" y="142" width="77.80000000000001" height="30" rx="15" fill="#f4f7fa" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="754.0999999999999" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#12181f" font-weight="normal" text-anchor="middle" letter-spacing="0">renewal</text>
+<text x="799.0" y="162" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">↺</text>
+<rect x="60" y="232" width="620" height="350" rx="6" fill="#f4f7fa" stroke="#1a5fb4" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="76" y="258" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#1a5fb4" font-weight="700" text-anchor="start" letter-spacing="1.2">CLOUD RUN  ·  orchestrator</text>
+<text x="76" y="276" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">Four human-paced agents sharing one working set</text>
+<rect x="76" y="290" width="588" height="62" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="90" y="315" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" fill="#12181f" font-weight="600" text-anchor="start" letter-spacing="0">Intake</text>
+<text x="90" y="333" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">documents in, structured fields + confidence</text>
+<rect x="76" y="360" width="588" height="62" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="90" y="385" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" fill="#12181f" font-weight="600" text-anchor="start" letter-spacing="0">Application</text>
+<text x="90" y="403" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">one consistency check, narrative vs budget</text>
+<text x="650" y="385" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#b8531a" font-weight="600" text-anchor="end" letter-spacing="0">human resolves</text>
+<rect x="76" y="430" width="588" height="62" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="90" y="455" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" fill="#12181f" font-weight="600" text-anchor="start" letter-spacing="0">Covenant</text>
+<text x="90" y="473" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">diffs award vs proposal, derives obligations</text>
+<rect x="76" y="500" width="588" height="62" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="90" y="525" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" fill="#12181f" font-weight="600" text-anchor="start" letter-spacing="0">Reporting</text>
+<text x="90" y="543" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">assembles SF-425, every line traceable</text>
+<text x="650" y="525" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#b8531a" font-weight="600" text-anchor="end" letter-spacing="0">human certifies</text>
+<rect x="940" y="232" width="600" height="158" rx="6" fill="#f4f7fa" stroke="#1a5fb4" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="956" y="258" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#1a5fb4" font-weight="700" text-anchor="start" letter-spacing="1.2">CLOUD RUN  ·  ledger-sentinel</text>
+<text x="956" y="276" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">Split out: the only high-volume, retry-heavy component</text>
+<rect x="956" y="290" width="568" height="62" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="970" y="315" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" fill="#12181f" font-weight="600" text-anchor="start" letter-spacing="0">Ledger Sentinel</text>
+<text x="970" y="333" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">7-value determination under 2 CFR 200 + award terms</text>
+<text x="1510" y="315" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#b8531a" font-weight="600" text-anchor="end" letter-spacing="0">escalates</text>
+<text x="970" y="378" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">push subscription  ·  5 attempts  ·  then DLQ</text>
+<rect x="700" y="232" width="220" height="369.5" rx="6" fill="#ffffff" stroke="#8a4fbd" stroke-width="1.6"/>
+<text x="810.0" y="258" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#8a4fbd" font-weight="700" text-anchor="middle" letter-spacing="0">Pub/Sub</text>
+<text x="810.0" y="275" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="normal" text-anchor="middle" letter-spacing="0">15 topics</text>
+<text x="714" y="294" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">document.ingested</text>
+<text x="714" y="312.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">application.assembled</text>
+<text x="714" y="331.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">consistency.exception_raised</text>
+<text x="714" y="349.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">human.resolution_recorded</text>
+<text x="714" y="368.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">award.received</text>
+<text x="714" y="386.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">obligation_model.created</text>
+<text x="714" y="405.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">award.delta_detected</text>
+<text x="714" y="423.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">transaction.posted</text>
+<text x="714" y="442.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">determination.made</text>
+<text x="714" y="460.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">determination.escalated</text>
+<text x="714" y="479.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">reporting.window_opened</text>
+<text x="714" y="497.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">report.drafted</text>
+<text x="714" y="516.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">report.certified</text>
+<text x="714" y="534.5" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">report.exported</text>
+<text x="714" y="553.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.2" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">exception.raised</text>
+<text x="810.0" y="587.5" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9.5" fill="#8a4fbd" font-weight="600" text-anchor="middle" letter-spacing="0">no agent calls another agent</text>
+<path d="M680,400 L694,400" stroke="#8a4fbd" stroke-width="1.4" fill="none" marker-end="url(#bus)"/>
+<path d="M926,330 L934,330" stroke="#8a4fbd" stroke-width="1.4" fill="none" marker-end="url(#bus)"/>
+<path d="M934,360 L926,360" stroke="#8a4fbd" stroke-width="1.4" fill="none" marker-end="url(#bus)"/>
+<rect x="940" y="418" width="600" height="114" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="956" y="442" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="700" text-anchor="start" letter-spacing="1.4">EVERY EVENT CARRIES</text>
+<text x="956" y="466" font-family="SF Mono, Menlo, Consolas, monospace" font-size="11" fill="#8a4fbd" font-weight="normal" text-anchor="start" letter-spacing="0">causation_id</text>
+<text x="1090" y="466" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">walks any fact back to the event that caused it</text>
+<text x="956" y="488" font-family="SF Mono, Menlo, Consolas, monospace" font-size="11" fill="#8a4fbd" font-weight="normal" text-anchor="start" letter-spacing="0">correlation_id</text>
+<text x="1090" y="488" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">constant for the whole award lineage</text>
+<text x="956" y="510" font-family="SF Mono, Menlo, Consolas, monospace" font-size="11" fill="#8a4fbd" font-weight="normal" text-anchor="start" letter-spacing="0">idempotency_key</text>
+<text x="1090" y="510" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">sha256 derived, so at-least-once becomes exactly-once</text>
+<rect x="60" y="635" width="300" height="96" rx="6" fill="#ffffff" stroke="#0f7b6c" stroke-width="1.25"/>
+<text x="76" y="659" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#0f7b6c" font-weight="700" text-anchor="start" letter-spacing="0">Firestore</text>
+<text x="76" y="679" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">obligations · determinations · reports</text>
+<text x="76" y="697" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">processed/{agent}/{idempotency_key}</text>
+<text x="76" y="715" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">written in the same transaction as the output</text>
+<rect x="380" y="635" width="300" height="96" rx="6" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="396" y="659" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#12181f" font-weight="700" text-anchor="start" letter-spacing="0">Vertex AI  ·  Gemini 3.5</text>
+<text x="396" y="679" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">drafts the escalation question only</text>
+<text x="396" y="699" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#b3261e" font-weight="600" text-anchor="start" letter-spacing="0">never decides a determination</text>
+<text x="396" y="717" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">MODEL_ID env var, one swap point</text>
+<rect x="700" y="635" width="220" height="96" rx="6" fill="#ffffff" stroke="#b3261e" stroke-width="1.25"/>
+<text x="716" y="659" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#b3261e" font-weight="700" text-anchor="start" letter-spacing="0">Dead letter queue</text>
+<text x="716" y="679" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">after 5 attempts</text>
+<text x="716" y="699" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">a panel on screen,</text>
+<text x="716" y="715" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">not a line in a log</text>
+<rect x="940" y="635" width="600" height="96" rx="6" fill="#ffffff" stroke="#b8531a" stroke-width="1.25"/>
+<text x="956" y="659" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#b8531a" font-weight="700" text-anchor="start" letter-spacing="0">Where a human is required</text>
+<text x="956" y="679" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">•  Consistency exception, three concrete resolutions offered</text>
+<text x="1524" y="679" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#b8531a" font-weight="normal" text-anchor="end" letter-spacing="0">application</text>
+<text x="956" y="696" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">•  Determination that turns on a fact about the world</text>
+<text x="1524" y="696" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#b8531a" font-weight="normal" text-anchor="end" letter-spacing="0">200.454(e)</text>
+<text x="956" y="713" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">•  SF-425 certification by an authorised official</text>
+<text x="1524" y="713" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#b8531a" font-weight="normal" text-anchor="end" letter-spacing="0">200.415(a)</text>
+<text x="60" y="775" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="700" text-anchor="start" letter-spacing="1.4">SEVEN DETERMINATIONS, EACH CITING THE PARAGRAPH THAT PRODUCED IT</text>
+<rect x="60" y="789" width="171.79999999999998" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="70" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">presumptively allowable</text>
+<text x="70" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.453</text>
+<rect x="241.79999999999998" y="789" width="185.0" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="251.79999999999998" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">presumptively unallowable</text>
+<text x="251.79999999999998" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.423</text>
+<rect x="436.79999999999995" y="789" width="158.6" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="446.79999999999995" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">missing documentation</text>
+<text x="446.79999999999995" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.403(g)</text>
+<rect x="605.4" y="789" width="145.39999999999998" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="615.4" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">requires allocation</text>
+<text x="615.4" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.405</text>
+<rect x="760.8" y="789" width="171.79999999999998" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="770.8" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">requires prior approval</text>
+<text x="770.8" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.458</text>
+<rect x="942.5999999999999" y="789" width="191.6" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="952.5999999999999" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">conflicts with award terms</text>
+<text x="952.5999999999999" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">award SC-2</text>
+<rect x="1144.1999999999998" y="789" width="204.79999999999998" height="46" rx="5" fill="#ffffff" stroke="#c3ced9" stroke-width="1.25"/>
+<text x="1154.1999999999998" y="808" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">requires human determination</text>
+<text x="1154.1999999999998" y="825" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">200.454(e)</text>
+<text x="60" y="859" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#12181f" font-weight="normal" text-anchor="start" letter-spacing="0">The determination is deterministic and citable. The model writes the question, never the verdict.</text>
+<text x="60" y="879" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#b3261e" font-weight="600" text-anchor="start" letter-spacing="0">A cost that matches no rule escalates. Silence is never approval.</text>
+<line x1="60" y1="931" x2="1540" y2="931" stroke="#c3ced9"/>
+<text x="60" y="957" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#5b6b7c" font-weight="700" text-anchor="start" letter-spacing="1.4">OFFLINE REPLAY PATH</text>
+<text x="60" y="979" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">The same agents and the same event contract run over an in-process bus with no cloud dependency and no installed packages.</text>
+<text x="60" y="999" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#5b6b7c" font-weight="normal" text-anchor="start" letter-spacing="0">Byte-identical every run, provenance chain included. A demo path that never touches the network cannot fail because of the network.</text>
+<text x="1540" y="979" font-family="SF Mono, Menlo, Consolas, monospace" font-size="11" fill="#12181f" font-weight="normal" text-anchor="end" letter-spacing="0">python -m grantloop.replay</text>
+<text x="1540" y="999" font-family="SF Mono, Menlo, Consolas, monospace" font-size="11" fill="#12181f" font-weight="normal" text-anchor="end" letter-spacing="0">python -m grantloop.api</text>
+</svg>
