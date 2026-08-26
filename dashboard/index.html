@@ -95,9 +95,9 @@ function cite(list) {
   // Accepts both shapes: bare strings ("200.475") from the seed, and the
   // live API's structured objects {section, paragraph, title}.
   const fmt = (c) => typeof c === "string"
-    ? "§" + c
-    : `§${c.section}${c.paragraph ? c.paragraph : ""}${c.title ? ` <em>${c.title}</em>` : ""}`;
-  return `<span class="cite">2 CFR ${list.map(fmt).join(", ")}</span>`;
+    ? "2 CFR §" + c
+    : (c.label || `2 CFR §${c.section}${c.paragraph ? c.paragraph : ""}`) + (c.title ? ` <em>${c.title}</em>` : "");
+  return `<span class="cite">${list.map(fmt).join(" · ")}</span>`;
 }
 
 function renderAward(seed) {
@@ -131,14 +131,17 @@ function renderSentinel(seed) {
   const txns = seed.ledger_stream.transactions;
   const legend = Object.entries(DET_STYLE).map(([k]) => detBadge(k)).join(" ");
   const rows = txns.map(t => {
-    // Compound behaviors (e.g. the alcohol SPLIT on TXN-002) carry
-    // expected_behavior instead of a single determination value.
-    const det = t.expected_determination
-      ? detBadge(t.expected_determination)
-      : `${detBadge("presumptively_unallowable")} <span class="det" style="color:var(--slate);border-color:var(--slate);background:#f8fafc">SPLIT</span><br><span class="cite">${t.expected_behavior}</span>`;
+    // Live API: `determination` + `citations` (+ `splits`, `rationale`).
+    // Seed: `expected_determination` + `expected_citations` (+ `expected_behavior`).
+    // Live mode never carries expected_* — a promise must not render as a result.
+    const detVal = t.determination || t.expected_determination;
+    const cites = t.citations || t.expected_citations;
+    const splitNote = t.expected_behavior || (t.splits ? t.rationale : null);
+    let det = detVal ? detBadge(detVal) : detBadge("presumptively_unallowable");
+    if (splitNote) det += ` <span class="det" style="color:var(--slate);border-color:var(--slate);background:#f8fafc">SPLIT</span><br><span class="cite">${splitNote}</span>`;
     return `
     <tr><td class="cite">${t.date}</td><td><strong>${t.vendor}</strong><br><span class="cite">${t.memo} · ${t.gl_account}</span></td>
-    <td class="num">${usd(t.amount)}</td><td>${det}<br>${cite(t.expected_citations)}</td></tr>`;
+    <td class="num">${usd(t.amount)}</td><td>${det}<br>${cite(cites)}</td></tr>`;
   }).join("");
   $("#sentinel").innerHTML = `
     <div class="panel"><h2>Determination legend — seven values, seven behaviors</h2><div class="legend">${legend}</div></div>
@@ -157,7 +160,8 @@ function renderDLQ() {
 function renderReport(seed) {
   const r = seed.reporting.first_report;
   const txns = seed.ledger_stream.transactions;
-  const disbursed = txns.filter(t => t.expected_determination === "presumptively_allowable").reduce((a, t) => a + t.amount, 0);
+  const detOf = (t) => t.determination || t.expected_determination;
+  const disbursed = txns.filter(t => detOf(t) === "presumptively_allowable").reduce((a, t) => a + t.amount, 0);
   $("#report").innerHTML = `
     <div class="panel"><h2>${r.form} — ${r.report_id} (${r.period_start} → ${r.period_end})</h2>
     <p class="cite">Due ${r.due_date} · quarterly cadence per specific condition SC-1</p>
@@ -165,7 +169,7 @@ function renderReport(seed) {
       <tr><td>10e. Federal share of expenditures (clean determinations only)</td><td class="num">${usd(disbursed)}</td>
       <td class="cite">computed from ${txns.length} ledger transactions — every figure click-through to its transaction (live mode)</td></tr>
       <tr><td>Unresolved exceptions attached</td>
-      <td class="num">${txns.filter(t => t.expected_determination !== "presumptively_allowable").length}</td>
+      <td class="num">${txns.filter(t => detOf(t) !== "presumptively_allowable").length}</td>
       <td class="cite">nothing certified while exceptions are open — they ride along, visibly</td></tr>
     </tbody></table>
     <div class="certify">

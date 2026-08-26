@@ -41,8 +41,10 @@ Live stream over Pub/Sub (replay CLI drives the deterministic seed; doubles as r
 | (from seed) receipt-less expense | `missing_documentation` |
 | (from seed) ordinary program cost sails through | `presumptively_allowable` |
 
-- Show the DLQ/exception panel once: failed handler retries then lands visibly. Failure handling as a feature.
-- NO CFR number renders unless verified (Aria Agent's pass).
+- Show the DLQ/exception panel once: failed handler retries then lands visibly. Failure handling as a feature. (Replay CLI: `--dlq TXN-004` forces this on camera.)
+- **Say out loud (VO, strength not limitation):** "The Sentinel doesn't ask a model whether a cost is allowable. It's a deterministic rule engine over verified citations — reproducible on camera, defensible to a judge. The model's only job is drafting the human-facing question on an escalation."
+- **Second VO line:** "Unmatched costs escalate to a human. Silence is never approval." (One line of code; the difference between a compliance tool and a liability.)
+- NO CFR number renders unless verified (Aria Agent's pass — done, rules v1.0.0).
 
 ### 2:25–3:00 — Beat 4: Reporting on the deadline event
 - SF-425 assembled from real ledger state; **every figure clickable to its transaction**; unresolved exceptions attached.
