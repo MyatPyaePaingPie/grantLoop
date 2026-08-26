@@ -94,22 +94,44 @@ The ledger feed, agency submission, and accounting-system integration are simula
 
 ---
 
-## ⛔ Blocking gaps before Aug 31
+## Devpost form state (verified 2026-08-26)
 
-Two of these are hard submission requirements that our code does not yet satisfy. They are not
-copy problems, they are build problems.
+Project overview and Additional info are saved. Project details holds everything except the video.
+
+| Field | Value |
+|---|---|
+| Submitter type / country | Team of individuals · United States |
+| Category | Taskmaster |
+| Start date | 08-25-26 |
+| Repo | https://github.com/MyatPyaePaingPie/grantLoop |
+| Reproducible testing instructions in README | Yes |
+| Google SDK | Agent Development Kit (ADK) |
+| Google Cloud service | Cloud Run |
+| Architecture diagram | uploaded (`docs/diagrams/architecture.png`) |
+| Google AI models | gemini-3.5-flash via Vertex AI, with the deterministic-engine explanation |
+| Team | Aria Han + Myat Paing, both accepted |
+
+## ⛔ Remaining before Aug 31
 
 | Gap | Why it blocks | Owner |
 |---|---|---|
-| **Gemini 3.5+ is not called by our code** | Every project "must use Gemini 3.5 or newer". Our Sentinel is deterministic by design and the model lane (drafting escalation questions) is not wired yet. | Aria Agent |
-| **No Google Agent Framework used** | ADK, GenAI SDK, Antigravity or Genkit is required. We use none today. `google-adk` is in our tags on that basis, not on current code. | Aria Agent |
-| Architecture diagram | Required file upload on Additional info. Does not exist. | unassigned |
-| ~4-min demo video | Required. Blocks Project details from completing. | Pooof |
-| Hosted project URL | Strongly recommended, and the visible proof of GCP deployment. Blocked on IAM. | Paing to grant Editor |
-| Submitter type, country, start date, org name | Personal details only Aria can answer. | Aria |
-| Reproducible testing instructions in README | Answer is Yes; README has them. Just needs selecting. | done in repo |
+| ~4-min demo video | Required. It is the only thing holding Project details at incomplete, and the only thing between us and a submittable draft. | Pooof |
+| Hosted project URL | Strongly recommended, and it is the visible proof of Google Cloud deployment. | blocked on IAM |
+| GCP Editor for `ariaxhan@gmail.com` on `active-future-506706-s7` | Without it the Cloud Run deploy cannot happen, which blocks the hosted URL above. | Paing |
 
-The first two are the ones that can disqualify us on a rules check no matter how good the build is.
-Both are addressable: the escalation-question drafter is a genuine, honest use of Gemini, and
-running the orchestrator's agents under ADK satisfies the framework requirement without changing
-the deterministic classification design.
+### Two cosmetic fields Devpost would not persist
+
+Pub/Sub and Firestore refuse to save alongside Cloud Run in the Google Cloud Service
+multi-select, and the optional Testing instructions box discards its content on save. Tried three
+times with three different input methods. **Neither blocks anything:** the rule requires at least
+one Google Cloud service and Cloud Run is saved, and testing instructions are optional and
+duplicated in the README. Worth one manual attempt by a human before submitting, not worth more
+automation.
+
+### ✅ Both rules gaps closed 2026-08-26
+
+Gemini 3.5 now drafts the escalation question, and the fleet runs under ADK with the deterministic
+engines wrapped as tools. Neither touches how a determination is reached. See
+`grantloop/sentinel/questions.py` and `grantloop/adk/fleet.py`, and `tests/test_model_lane.py`
+for the three guarantees: a model failure cannot break a determination, the model cannot change a
+determination, and the prompt carries the real transaction.
