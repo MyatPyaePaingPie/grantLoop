@@ -1,5 +1,11 @@
 # GCP / Gemini validation — 2026-08-26
 
+> ⚠️ **HISTORICAL.** `modelmind-491801` was abandoned on 2026-08-26. Paing is standing up a
+> fresh project. This document is kept as the evidence trail for *why* — the Gemini 3.x 404s
+> below are the reason — and for the two gotchas at the bottom, which apply to any project.
+> **It does not describe our infrastructure.** Nothing in the codebase hardcodes a project id;
+> `GOOGLE_CLOUD_PROJECT` and `MODEL_ID` are environment variables.
+
 Run from Aria's machine, account `ariaxhan@gmail.com`, project `modelmind-491801`.
 
 ## Result summary

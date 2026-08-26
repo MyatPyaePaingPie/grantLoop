@@ -10,3 +10,7 @@ service-account*.json
 
 # OS / editor
 .DS_Store
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

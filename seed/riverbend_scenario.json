@@ -9,10 +9,10 @@
     "admin_staff": 2,
     "indirect_rate": {
       "type": "de_minimis",
-      "rate": null,
+      "rate": 0.15,
       "basis": "MTDC",
-      "citation": "200.414",
-      "TODO": "set from eCFR-verified de minimis rate"
+      "citation": "200.414(f)",
+      "verified": "2026-08-26 against eCFR snapshot 2026-08-01 — ceiling is 15 percent of MTDC"
     },
     "capitalization_threshold": 5000,
     "written_travel_policy": true

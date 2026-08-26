@@ -1,6 +1,6 @@
 # GrantLoop
 
-🔧 **ready to build** — schema, event contract, allowability rules and seed scenario are landed. Agents are next.
+🔧 **building** — Ledger Sentinel and the deterministic replay CLI are working and tested. Citations are eCFR-verified. Cloud deploy is next.
 
 > Most grant software remembers the documents. GrantLoop remembers the promises.
 
@@ -44,6 +44,43 @@ agent — every transition is an event carrying `causation_id`, and every handle
   retry-and-DLQ-heavy component, and it is the one on screen during the demo
 
 Full reasoning in the plan.
+
+## Run it
+
+Nothing to install and no cloud project needed. The replay path is pure Python by design —
+it is the record-day fallback, and a demo path that never touches the network cannot fail
+because of the network.
+
+```bash
+python -m grantloop.replay                 # seven transactions, seven determinations
+python -m grantloop.replay --pace 1.5      # narratable pace, for the demo video
+python -m grantloop.replay --dlq TXN-004   # force retry + dead-letter, on camera
+python -m grantloop.replay --redeliver     # publish everything twice; output is identical
+python -m grantloop.replay --json          # API-shaped state for the dashboard
+```
+
+Tests:
+
+```bash
+python -m venv .venv && .venv/bin/pip install -e ".[dev]"
+.venv/bin/python -m pytest -q
+```
+
+The suite is the acceptance bar for demo beat 3: all seven determination values must fire
+exactly once against the seeded ledger, and no CFR citation may render without a verified
+section and title.
+
+### Cloud mode
+
+Set two environment variables and the same code runs against real Pub/Sub and Vertex:
+
+```bash
+export GOOGLE_CLOUD_PROJECT=<project>     # absent = offline mode
+export MODEL_ID=gemini-3.5-flash          # single swap point for model access
+```
+
+No project id is hardcoded anywhere. The project moved once already; the model id is
+expected to move again.
 
 ## Status
 

@@ -44,7 +44,16 @@
         "open bar",
         "cash bar",
         "sommelier"
-      ]
+      ],
+      "split_behavior": {
+        "carve_out": "presumptively_unallowable",
+        "remainder_determination": "requires_human_determination",
+        "remainder_citations": [
+          "200.432",
+          "200.438(a)"
+        ],
+        "remainder_question": "Does the remaining catering cost serve the award's programmatic purpose under 200.432, or is it entertainment under 200.438(a)?"
+      }
     },
     {
       "id": "R-438-ENT",
@@ -307,6 +316,27 @@
         "200.454(a)-(c)": "presumptively_allowable",
         "200.454(d)": "presumptively_unallowable - country/social/dining clubs",
         "200.454(e)": "presumptively_unallowable - primary purpose lobbying"
+      },
+      "human_question": {
+        "fact_required": "counterparty_primary_purpose_is_lobbying",
+        "question": "Is this organization's primary purpose lobbying? 2 CFR 200.454(e) makes memberships unallowable only in that case; 200.454(c) makes civic and community memberships allowable. This is a fact about the organization, not about the invoice, so it cannot be read off the transaction.",
+        "options": [
+          {
+            "answer": "yes",
+            "determination": "presumptively_unallowable",
+            "citation": "200.454(e)"
+          },
+          {
+            "answer": "no",
+            "determination": "presumptively_allowable",
+            "citation": "200.454(c)"
+          },
+          {
+            "answer": "country, social or dining club",
+            "determination": "presumptively_unallowable",
+            "citation": "200.454(d)"
+          }
+        ]
       }
     },
     {
@@ -361,7 +391,8 @@
       "paragraph": "(g)",
       "see_also": [
         "200.334 (record retention duration - three years)"
-      ]
+      ],
+      "requires_attachment": true
     }
   ],
   "monitoring_consequences": {

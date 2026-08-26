@@ -1,0 +1,22 @@
+[project]
+name = "grantloop"
+version = "0.1.0"
+description = "Promise-to-proof agent fleet for federal grants"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# The offline path — replay CLI, Sentinel, tests — needs nothing installed.
+# These are only for the deployed cloud path.
+cloud = [
+  "google-cloud-pubsub>=2.21",
+  "google-cloud-firestore>=2.16",
+  "google-genai>=1.0",
+]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+grantloop-replay = "grantloop.replay.__main__:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
