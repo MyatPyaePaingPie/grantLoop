@@ -12,7 +12,7 @@ from typing import Any
 
 from .routes import Orchestrator, ROUTES
 
-ROOT = Path(__file__).resolve().parents[2]
+from ..paths import DASHBOARD, SEED
 
 
 def create_app() -> Any:
@@ -66,7 +66,7 @@ def _mount_dashboard(app: Any) -> None:
     from fastapi.responses import RedirectResponse
     from fastapi.staticfiles import StaticFiles
 
-    dashboard = ROOT / "dashboard"
+    dashboard = DASHBOARD
     if not dashboard.is_dir():
         return
 
@@ -76,7 +76,7 @@ def _mount_dashboard(app: Any) -> None:
 
     # The dashboard reads the seed directly when live data is unavailable, so the
     # seed has to be reachable at the same relative path it uses locally.
-    app.mount("/seed", StaticFiles(directory=str(ROOT / "seed")), name="seed")
+    app.mount("/seed", StaticFiles(directory=str(SEED)), name="seed")
     app.mount("/dashboard", StaticFiles(directory=str(dashboard), html=True), name="dashboard")
 
 

@@ -68,6 +68,10 @@ class QuestionDrafter:
         self.config = config or load()
         self._client = client
         self._tried = False
+        #: Why the model lane last fell back. A silent fallback is correct
+        #: behaviour and a terrible diagnostic: the whole project insists that
+        #: failures be visible rather than swallowed, and this one was swallowed.
+        self.last_error: str | None = None
 
     def _get_client(self) -> Any | None:
         """Vertex client, built once and only when a project is configured."""
@@ -84,14 +88,17 @@ class QuestionDrafter:
                 project=self.config.project,
                 location=self.config.location,
             )
-        except Exception:
-            self._client = None  # never let model plumbing break a determination
+        except Exception as exc:  # never let model plumbing break a determination
+            self.last_error = f"client: {type(exc).__name__}: {exc}"[:400]
+            self._client = None
         return self._client
 
     def draft(self, *, txn: dict[str, Any], rule_title: str, citation: str,
               rationale: str, fact: str, fallback: str) -> DraftedQuestion:
         client = self._get_client()
         if client is None:
+            if self.last_error is None and self.config.offline:
+                self.last_error = "offline: no GOOGLE_CLOUD_PROJECT configured"
             return DraftedQuestion(fallback, "fallback")
 
         prompt = PROMPT.format(
@@ -111,11 +118,14 @@ class QuestionDrafter:
                 config={"temperature": 0.2, "max_output_tokens": 200},
             )
             text = (getattr(response, "text", "") or "").strip()
-        except Exception:
+        except Exception as exc:
+            self.last_error = f"generate: {type(exc).__name__}: {exc}"[:400]
             return DraftedQuestion(fallback, "fallback")
 
         if not _usable(text):
+            self.last_error = f"unusable draft ({len(text)} chars): {text[:120]!r}"
             return DraftedQuestion(fallback, "fallback")
+        self.last_error = None
         return DraftedQuestion(text, "gemini", self.config.model_id)
 
 

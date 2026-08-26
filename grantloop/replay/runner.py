@@ -21,8 +21,7 @@ from ..events.envelope import deterministic_ids
 from ..covenant import Covenant
 from ..sentinel import Sentinel, load_ruleset
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SEED = ROOT / "seed" / "riverbend_scenario.json"
+from ..paths import SCENARIO as DEFAULT_SEED
 
 
 @dataclass

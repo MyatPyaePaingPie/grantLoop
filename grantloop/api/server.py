@@ -20,7 +20,7 @@ from urllib.parse import parse_qs, urlparse
 
 from .routes import Orchestrator, dispatch
 
-ROOT = Path(__file__).resolve().parents[2]
+from ..paths import ROOT
 
 
 class Handler(SimpleHTTPRequestHandler):

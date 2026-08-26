@@ -31,6 +31,7 @@ class Orchestrator:
         self._seed_path = seed_path
         self._fail_txn = fail_txn
         self._cache: dict[str, Any] | None = None
+        self._drafter: Any = None
 
     def _state(self) -> dict[str, Any]:
         if self._cache is None:
@@ -38,6 +39,7 @@ class Orchestrator:
             replay.run()
             self._cache = replay.api_state()
             self._ruleset_version = replay.ruleset.version
+            self._drafter = replay.sentinel.drafter
         return self._cache
 
     def refresh(self) -> None:
@@ -54,7 +56,31 @@ class Orchestrator:
             **self.config.describe(),
             "ruleset_version": self._ruleset_version,
             "citations_verified": state["health"]["citations_verified"],
-            "source": "replay" if self.config.offline else "firestore",
+            # Say what is actually serving the data. This read "firestore"
+            # whenever a project was configured, which was a lie in every
+            # deployment that had not yet been wired to Firestore.
+            "source": self._source,
+            "model_lane": self._model_lane(),
+        }
+
+    @property
+    def _source(self) -> str:
+        return "replay"
+
+    def _model_lane(self) -> dict[str, Any]:
+        """Whether Gemini is actually answering, and why not when it is not.
+
+        A fallback is correct behaviour, but an invisible fallback means the
+        model requirement can silently go unmet in production while every screen
+        still looks right.
+        """
+        drafter = self._drafter
+        used = [t.get("question_source") for t in self._state()["ledger"]["transactions"]
+                if t.get("question_for_human")]
+        return {
+            "configured": not self.config.offline,
+            "questions_drafted_by": sorted(set(used)) or ["none"],
+            "last_error": getattr(drafter, "last_error", None),
         }
 
     def award(self) -> dict[str, Any]:

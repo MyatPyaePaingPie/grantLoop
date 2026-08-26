@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-DEFAULT_PATH = Path(__file__).resolve().parents[2] / "schema" / "allowability_rules.v0.json"
+from ..paths import RULESET as DEFAULT_PATH
 
 # Titles for sections cited at paragraph level, where the section's own title is too
 # coarse to be honest on screen. 200.403 is the clearest case: citing "Factors

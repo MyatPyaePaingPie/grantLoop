@@ -23,8 +23,7 @@ from ..config import load
 from ..covenant import Covenant
 from ..sentinel import Sentinel, load_ruleset
 
-ROOT = Path(__file__).resolve().parents[2]
-SEED = ROOT / "seed" / "riverbend_scenario.json"
+from ..paths import SCENARIO as SEED
 
 
 def _scenario() -> dict[str, Any]:

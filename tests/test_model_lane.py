@@ -171,3 +171,44 @@ def test_default_vertex_location_is_global() -> None:
     """
     assert load({}).location == "global"
     assert load({"GOOGLE_CLOUD_LOCATION": "europe-west4"}).location == "europe-west4"
+
+
+def test_fallback_records_why_it_fell_back() -> None:
+    """An invisible fallback lets the model requirement go quietly unmet.
+
+    The deployed service reported everything healthy while Gemini was never
+    reached, because the failure was swallowed by a broad except. Whatever the
+    reason, it has to be recoverable.
+    """
+    offline = QuestionDrafter(config=load({}))
+    offline.draft(txn=TXNS["TXN-007"], rule_title="t", citation="c", rationale="r",
+                  fact="f", fallback="STATIC?")
+    assert offline.last_error and "offline" in offline.last_error
+
+    broken = _drafter(_FakeClient(boom=True))
+    broken.draft(txn=TXNS["TXN-007"], rule_title="t", citation="c", rationale="r",
+                 fact="f", fallback="STATIC?")
+    assert broken.last_error and "vertex unavailable" in broken.last_error
+
+    unusable = _drafter(_FakeClient("no question mark here"))
+    unusable.draft(txn=TXNS["TXN-007"], rule_title="t", citation="c", rationale="r",
+                   fact="f", fallback="STATIC?")
+    assert unusable.last_error and "unusable" in unusable.last_error
+
+
+def test_success_clears_the_error() -> None:
+    drafter = _drafter(_FakeClient("Is the chamber primarily a lobbying organisation?"))
+    result = drafter.draft(txn=TXNS["TXN-007"], rule_title="t", citation="c",
+                           rationale="r", fact="f", fallback="STATIC?")
+    assert result.source == "gemini"
+    assert drafter.last_error is None
+
+
+def test_health_reports_the_real_data_source() -> None:
+    """It claimed 'firestore' whenever a project was set, in every deployment."""
+    from grantloop.api.routes import Orchestrator
+
+    health = Orchestrator().health()
+    assert health["source"] == "replay"
+    assert health["model_lane"]["questions_drafted_by"] == ["fallback"]
+    assert health["model_lane"]["last_error"]
